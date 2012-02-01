@@ -16,16 +16,27 @@ case $command in
   new)
     mkdir -p $for_a/projects
   ;;
+
   project)
     check_heidi_root
 
+    # create a logs dir
     mkdir -p projects/$for_a/logs
     cd projects/$for_a
+
+    # make a clone
     git clone $2 cached
+    cd cached
+    git config heidi.name $for_a
   ;;
+
   drop)
     check_heidi_root
 
-    rm -r projects/$for_a
+    # remove build and cache dir, expose logs directly
+    rm -r projects/$for_a/build
+    rm -r projects/$for_a/cached
+    mv projects/$for_a/logs/* projects/$for_a/
+    rm -r projects/$for_a/logs
   ;;
-end
+esac
