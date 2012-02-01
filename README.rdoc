@@ -2,7 +2,7 @@
 
 A Continious Integration thingy. Naive, and therefor called Heidi.
 
-  (think: http://www.tv-nostalgie.de/sound/Heidi2.jpg)
+http://www.tv-nostalgie.de/sound/Heidi2.jpg
 
 Heidi is still taking form and is/will-be used to do CI at OrganisedMinds.com
 (http://organisedminds.com) - Why don't you sign up there? It's free!
