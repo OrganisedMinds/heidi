@@ -13,10 +13,46 @@ Gem::Specification.new do |s|
   s.description = "CI-Joe alike CI system called Heidi."
   s.email = "hartog@organisedminds.com"
   s.executables = ["heidi", "heidi_console", "heidi_cron", "heidi_web"]
+  s.extra_rdoc_files = [
+    "LICENSE.txt",
+    "README.rdoc"
+  ]
   s.files = [
+    ".document",
+    ".rspec",
     "Gemfile",
     "Gemfile.lock",
-    "heidi.gemspec"
+    "LICENSE.txt",
+    "README.rdoc",
+    "Rakefile",
+    "VERSION",
+    "bin/heidi",
+    "bin/heidi_console",
+    "bin/heidi_cron",
+    "bin/heidi_web",
+    "heidi.gemspec",
+    "lib/heidi.rb",
+    "lib/heidi/build.rb",
+    "lib/heidi/builder.rb",
+    "lib/heidi/git.rb",
+    "lib/heidi/hook.rb",
+    "lib/heidi/integrator.rb",
+    "lib/heidi/project.rb",
+    "lib/heidi/tester.rb",
+    "lib/heidi/web.rb",
+    "lib/heidi/web/routes.rb",
+    "lib/heidi/web/routes/home.rb",
+    "lib/heidi/web/routes/projects.rb",
+    "spec/heidi/build_spec.rb",
+    "spec/heidi/builder_spec.rb",
+    "spec/heidi/git_spec.rb",
+    "spec/heidi/hook_spec.rb",
+    "spec/heidi/integrator_spec.rb",
+    "spec/heidi/project_spec.rb",
+    "spec/heidi/tester_spec.rb",
+    "spec/heidi/web_spec.rb",
+    "spec/heidi_spec.rb",
+    "spec/spec_helper.rb"
   ]
   s.homepage = "http://github.com/coffeeaddict/heid"
   s.licenses = ["MIT"]
