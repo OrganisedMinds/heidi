@@ -1,5 +1,5 @@
-require './lib/simple_git'
-require './lib/simple_shell'
+require 'simple_git'
+require 'simple_shell'
 require 'time'
 
 class Heidi

@@ -1,4 +1,4 @@
-require './lib/simple_git'
+require 'simple_git'
 
 class Heidi
   # wrap the simple git stuff to get heidi keys

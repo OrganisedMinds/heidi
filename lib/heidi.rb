@@ -1,5 +1,5 @@
 require 'fileutils'
-require './lib/heidi/project'
+require 'heidi/project'
 
 class Heidi
   attr_reader :projects

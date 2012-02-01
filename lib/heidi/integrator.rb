@@ -1,5 +1,5 @@
-require './lib/heidi/builder'
-require './lib/heidi/tester'
+require 'heidi/builder'
+require 'heidi/tester'
 
 class Heidi
   class Integrator

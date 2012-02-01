@@ -1,4 +1,4 @@
-require './lib/simple_shell'
+require 'simple_shell'
 
 class Heidi
   class Hook

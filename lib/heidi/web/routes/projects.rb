@@ -1,24 +1,39 @@
 module Routes
   module Projects
     get '/projects' do
-      # load all projects
+      output = ""
+      $heidi.projects.each do |project|
+        output += "<a href='/projects/#{project.name}'>#{project.name}</a><br />"
+      end
+
+      output
     end
 
     get '/projects/:name' do
-      # load specific project
-      "no project by that name: #{params[:name]}"
+      project = $heidi[params[:name]]
+      if project.nil?
+        return "no project by that name: #{params[:name]}"
+      end
+
+      output = ""
     end
 
     get '/projects/:name/build/:id' do
+      project = $heidi[params[:name]]
+      if project.nil?
+        return "no project by that name: #{params[:name]}"
+      end
+
       # load build of project
     end
 
     put '/projects/:name/build' do
-      # request integration
-    end
+      project = $heidi[params[:name]]
+      if project.nil?
+        return "no project by that name: #{params[:name]}"
+      end
 
-    post '/projects' do
-      # create a new project
+      project.integrate
     end
   end
 end

@@ -1,6 +1,6 @@
-require './lib/heidi/git'
-require './lib/heidi/integrator'
-require './lib/heidi/hook'
+require 'heidi/git'
+require 'heidi/integrator'
+require 'heidi/hook'
 
 class Heidi
   class Project
@@ -8,11 +8,11 @@ class Heidi
 
     def initialize(root)
       @root = root
-      @cached_root = File.join(root, "cached") 
+      @cached_root = File.join(root, "cached")
       @git = Heidi::Git.new(@cached_root)
       load_hooks
     end
-    
+
     def load_hooks
       @build_hooks = []
       @test_hooks = []
