@@ -1,10 +1,10 @@
-require './lib/git'
+require './lib/simple_git'
 
 class Heidi
   # wrap the simple git stuff to get heidi keys
   class Git
     def initialize(root)
-      @proxy = ::Git.new(root)
+      @proxy = SimpleGit.new(root)
     end
 
     def method_missing(method, *args, &block)

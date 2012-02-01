@@ -1,4 +1,4 @@
-require './lib/git'
+require './lib/simple_git'
 require './lib/simple_shell'
 require 'time'
 
@@ -37,7 +37,7 @@ class Heidi
              build_failed = true
            else
              build_log(res.out)
-           end 
+           end
          end
 
          if build_failed == true
@@ -111,7 +111,7 @@ class Heidi
     def build_log(string)
       File.open(File.join(@log_root, "build.log"), File::CREAT|File::WRONLY|File::APPEND) do |f|
         f.puts string
-      end 
+      end
     end
   end
 end
