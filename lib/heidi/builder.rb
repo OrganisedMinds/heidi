@@ -11,10 +11,6 @@ class Heidi
     end
 
     def build!
-      if project.last_commit == project.latest_build && project.latest_build != ""
-        return false
-      end
-
       return false if self.setup_build_dir != true
 
       if build.hooks[:build].any?
@@ -60,8 +56,9 @@ class Heidi
 
       if project.integration_branch
         @git = Heidi::Git.new(build.build_root)
-        build.log(:info, "Switching to integration branch: #{branch}")
+
         branch = project.integration_branch
+        build.log(:info, "Switching to integration branch: #{branch}")
         res = @git.switch(branch)
         if res.nil?
           build.log(:info, "Creating integration branch from origin/#{branch}")

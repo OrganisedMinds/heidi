@@ -1,6 +1,7 @@
 require 'heidi/build'
 require 'heidi/builder'
 require 'heidi/tester'
+require 'time'
 
 class Heidi
   class Integrator
@@ -14,9 +15,11 @@ class Heidi
 
     def failure
       @failed = true
+      build.record(:failure)
     end
 
     def integrate
+      start = Time.now
       build.lock
       build.load_hooks
       build.clean
@@ -31,11 +34,12 @@ class Heidi
       return failure if !run_hooks(:after)
 
       # record the new succesful
-      build.record
+      build.record(:success)
 
       # create a tarball
       build.create_tar_ball
 
+      build.log :info, ("Integration took: %.2fs" % (Time.now - start))
       return true
 
     rescue Exception => e

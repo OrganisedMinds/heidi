@@ -1,4 +1,5 @@
 require 'simple_shell'
+require 'time'
 
 class Heidi
   # An integration is called a build.
@@ -80,7 +81,7 @@ class Heidi
     def lock(&block)
       log(:info, "Locking build")
       File.open(lock_file, File::CREAT|File::TRUNC|File::WRONLY) do |f|
-        f.puts Time.now.strftime "%c"
+        f.puts Time.now.ctime
       end
 
       if block_given?
@@ -98,8 +99,45 @@ class Heidi
       File.exists? lock_file
     end
 
-    def record
-      project.record_latest_build
+    def record(what)
+      flags = File::CREAT|File::TRUNC|File::WRONLY
+      file = nil
+      case what
+      when :failure
+        project.build_status = "failed"
+        file = File.open(File.join(@root, "FAILURE"), flags)
+      when :success
+        project.build_status = "passed"
+        project.record_latest_build
+        file = File.open(File.join(@root, "SUCCESS"), flags)
+      end
+
+      unless file.nil?
+        file.puts Time.now.ctime
+        file.close
+      end
+    end
+
+    def failed?
+      File.exists?(File.join(@root, "FAILURE"))
+    end
+
+    def success?
+      File.exists?(File.join(@root, "SUCCESS"))
+    end
+
+    def status
+      self.failed? ?
+        "failed" :
+        self.success? ?
+          "passed" :
+          "DNF"
+    end
+
+    def logs(what)
+      File.read(File.join(@root, what))
+    rescue
+      ""
     end
 
     def create_tar_ball
