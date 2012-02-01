@@ -1,9 +1,14 @@
-= heidi
+= Heidi
 
-Description goes here.
+A Continious Integration thingy. Naive, and therefor called Heidi.
+
+  (think: http://www.tv-nostalgie.de/sound/Heidi2.jpg)
+
+Heidi is still taking form and is/will-be used to do CI at OrganisedMinds.com
+(http://organisedminds.com) - Why don't you sign up there? It's free!
 
 == Contributing to heidi
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
 * Fork the project.
