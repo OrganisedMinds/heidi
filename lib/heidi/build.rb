@@ -49,7 +49,7 @@ class Heidi
     end
 
     def clean
-      %w(heidi.info heidi.errors test.log builder.log build).each do |inode|
+      %w(heidi.info heidi.errors test.log builder.log build SUCCESS FAILURE).each do |inode|
         shell.rm("-r", "-f", inode) if File.exists? File.join(@root, inode)
       end
     end
