@@ -14,19 +14,28 @@ check_heidi_root()
 
 case $command in
   new)
+    echo "creating $for_a"
+    echo "creating $for_a/projects"
     mkdir -p $for_a/projects
+    echo "creating $for_a/bin"
+    mkdir -p $for_a/bin
   ;;
 
   project)
     check_heidi_root
 
     # create a logs dir
+    echo "creating projects/$for_a"
+    echo "creating projects/$for_a/logs"
     mkdir -p projects/$for_a/logs
     cd projects/$for_a
 
     # make a clone
-    git clone $2 cached
+    echo "filling $for_a cache"
+    git clone $3 cached
     cd cached
+
+    echo "setting the name of the project to: $for_a"
     git config heidi.name $for_a
   ;;
 
@@ -34,8 +43,12 @@ case $command in
     check_heidi_root
 
     # remove build and cache dir, expose logs directly
+    echo "removing build dir"
     rm -r projects/$for_a/build
+    echo "removing cache (preserving project config)"
+    cp -pr projects/$for_a/cached/.git/config projects/$for_a
     rm -r projects/$for_a/cached
+    echo "exposing builds"
     mv projects/$for_a/logs/* projects/$for_a/
     rm -r projects/$for_a/logs
   ;;
