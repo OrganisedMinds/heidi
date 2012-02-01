@@ -1,4 +1,6 @@
 require 'fileutils'
+require 'simple_shell'
+
 require 'heidi/project'
 
 class Heidi

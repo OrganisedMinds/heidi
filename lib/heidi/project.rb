@@ -1,33 +1,17 @@
 require 'heidi/git'
 require 'heidi/integrator'
 require 'heidi/hook'
+require 'time'
 
 class Heidi
   class Project
-    attr_reader :root, :cached_root, :build_hooks, :test_hooks
+    attr_reader :root, :cached_root, :lock_file
 
     def initialize(root)
-      @root = root
+      @root        = root
+      @lock_file   = File.join(root, ".lock")
       @cached_root = File.join(root, "cached")
-      @git = Heidi::Git.new(@cached_root)
-      load_hooks
-    end
-
-    def load_hooks
-      @build_hooks = []
-      @test_hooks = []
-
-      Dir[File.join(@root, "hooks", "build", "*")].each do |hook|
-        next if File.directory? hook
-        next unless File.executable? hook
-        @build_hooks << Heidi::Hook.new(self, hook)
-      end
-
-      Dir[File.join(@root, "hooks", "tests", "*")].each do |hook|
-        next if File.directory? hook
-        next unless File.executable? hook
-        @build_hooks << Heidi::Hook.new(self, hook)
-      end
+      @git         = Heidi::Git.new(@cached_root)
     end
 
     def name=(name)
@@ -57,8 +41,48 @@ class Heidi
       @git[:latest_build] = self.commit
     end
 
-    def integrate
-      Heidi::Integrator.integrate(self)
+    def build_status
+      @git[:build_status]
     end
+    def build_status=(status)
+      @git[:build_status] = status
+    end
+
+    def integration_branch
+      name = @git[:integration_branch]
+      name == "" ? nil : name
+    end
+
+    def integrate
+      return "locked" if locked?
+
+      status = ""
+      self.lock do
+        res = Heidi::Integrator.new(self).integrate
+        status = res != true ? "failed" : "passed"
+      end
+
+      return status
+    end
+
+    def lock(&block)
+      File.open(lock_file, File::TRUNC|File::CREAT|File::WRONLY) do |f|
+        f.puts Time.now.strftime("%c")
+      end
+
+      if block_given?
+        yield
+        self.unlock
+      end
+    end
+
+    def unlock
+      File.unlink lock_file
+    end
+
+    def locked?
+      File.exists? lock_file
+    end
+
   end
 end

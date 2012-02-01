@@ -1,4 +1,5 @@
-module Routes
+class Heidi; module Web; module Routes
+
   module Projects
     get '/projects' do
       output = ""
@@ -15,7 +16,8 @@ module Routes
         return "no project by that name: #{params[:name]}"
       end
 
-      output = ""
+      output = "<h1>#{project.name}</h1>"
+      output += "Build status: #{project.build_status}"
     end
 
     get '/projects/:name/build/:id' do
@@ -36,4 +38,5 @@ module Routes
       project.integrate
     end
   end
-end
+
+end; end; end

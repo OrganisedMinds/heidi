@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.date = "2012-02-01"
   s.description = "CI-Joe alike CI system called Heidi."
   s.email = "hartog@organisedminds.com"
-  s.executables = ["heidi", "heidi_cron.rb", "heidi_web.rb"]
+  s.executables = ["heidi", "heidi_cron", "heidi_web"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -27,8 +27,9 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "bin/heidi",
-    "bin/heidi_cron.rb",
-    "bin/heidi_web.rb",
+    "bin/heidi_cron",
+    "bin/heidi_web",
+    "heidi.gemspec",
     "lib/heidi.rb",
     "lib/heidi/builder.rb",
     "lib/heidi/git.rb",
@@ -36,14 +37,11 @@ Gem::Specification.new do |s|
     "lib/heidi/integrator.rb",
     "lib/heidi/project.rb",
     "lib/heidi/tester.rb",
-    "lib/routes.rb",
-    "lib/routes/home.rb",
-    "lib/routes/projects.rb",
+    "lib/heidi/web/routes.rb",
+    "lib/heidi/web/routes/home.rb",
+    "lib/heidi/web/routes/projects.rb",
     "lib/simple_git.rb",
-    "lib/simple_shell.rb",
     "spec/heidi_spec.rb",
-    "spec/simple_git_spec.rb",
-    "spec/simple_shell_spec.rb",
     "spec/spec_helper.rb"
   ]
   s.homepage = "http://github.com/coffeeaddict/heid"
@@ -58,6 +56,8 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<thin>, [">= 0"])
       s.add_runtime_dependency(%q<sinatra>, [">= 0"])
+      s.add_runtime_dependency(%q<simple_shell>, [">= 0"])
+      s.add_runtime_dependency(%q<simple_git>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
@@ -66,6 +66,8 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<thin>, [">= 0"])
       s.add_dependency(%q<sinatra>, [">= 0"])
+      s.add_dependency(%q<simple_shell>, [">= 0"])
+      s.add_dependency(%q<simple_git>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
@@ -75,6 +77,8 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<thin>, [">= 0"])
     s.add_dependency(%q<sinatra>, [">= 0"])
+    s.add_dependency(%q<simple_shell>, [">= 0"])
+    s.add_dependency(%q<simple_git>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.8.0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])

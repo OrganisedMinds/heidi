@@ -1,22 +1,52 @@
 class Heidi
   class Tester
-    def self.test(project, build_root)
-      log = File.open(File.join(build_root, "test.log"), File::CREAT|File::APPEND|File::WRONLY)
+    attr_reader :build, :project, :message
+
+    def initialize(build)
+      @build    = build
+      @project  = build.project
+      @message  = ""
+    end
+
+    def test!
+      build.log(:info, "Starting tests")
+
       tests_failed = false
 
-      project.test_hooks.each do |hook|
-        next if tests_failed == true
+      if build.hooks[:tests].empty?
+        build.log(:error, "There are no test hooks")
+        @message = "There are no test hooks"
+        return false
+      end
 
-        res = hook.perform(build_root)
+      build.hooks[:tests].each do |hook|
+        res = hook.perform(build.build_root)
+
         if res.S?.to_i != 0
-          log.puts res.err
+          log "--- test #{hook.name} failed ---"
+          log res.err
+
+          @message = "tests failed"
           tests_failed = true
+          break
+
         else
-          log.puts res.out
+          log res.out
         end
       end
 
       return tests_failed ? false : true
     end
+
+    def log(string)
+      File.open(
+        File.join(build.root, "test.log"),
+        File::CREAT|File::WRONLY|File::APPEND
+      ) do |f|
+        f.puts string
+      end
+    end
+
+
   end
 end

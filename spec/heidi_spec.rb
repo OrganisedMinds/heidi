@@ -1,7 +1,14 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
 describe Heidi do
-  it "fails" do
-    fail "hey buddy, you should probably rename this file and start specing for real"
+  before(:all) do
+    shell = SimpleShell.new("/")
+    shell.mkdir("-p", "/tmp/heidi_spec/projects/one")
+  end
+
+  it "should gather projects on load" do
+    h = Heidi.new("/tmp/heidi_spec")
+    h.projects.should be_kind_of(Array)
+    h.projects.count.should == 1
   end
 end

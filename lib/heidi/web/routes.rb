@@ -1,5 +1,5 @@
-require './lib/heidi/web/routes/projects'
-require './lib/heidi/web/routes/home'
+require 'heidi/web/routes/projects'
+require 'heidi/web/routes/home'
 
 class Heidi
   module Web

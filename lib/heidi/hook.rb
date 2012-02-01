@@ -8,13 +8,13 @@ class Heidi
     end
 
     def perform(where)
-      shell = SimpleShell.new
-
-      Dir.chdir where do
-        res = shell.do script
-      end
-
+      shell = SimpleShell.new(where)
+      res = shell.do @script
       return res
+    end
+
+    def name
+      File.basename(@script)
     end
   end
 end

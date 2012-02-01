@@ -28,9 +28,14 @@ case $command in
     echo "creating projects/$for_a"
     echo "creating projects/$for_a/logs"
     mkdir -p projects/$for_a/logs
-    cd projects/$for_a
+
+    echo "creating projects/$for_a/hooks/build"
+    echo "creating projects/$for_a/hooks/tests"
+    mkdir -p projects/$for_a/hooks/build
+    mkdir -p projects/$for_a/hooks/tests
 
     # make a clone
+    cd projects/$for_a
     echo "filling $for_a cache"
     git clone $3 cached
     cd cached
@@ -51,5 +56,15 @@ case $command in
     echo "exposing builds"
     mv projects/$for_a/logs/* projects/$for_a/
     rm -r projects/$for_a/logs
+  ;;
+  web)
+    check_heidi_root
+
+    heidi_web
+  ;;
+  console)
+    check_heidi_root
+
+    heidi_console
   ;;
 esac

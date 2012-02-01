@@ -3,7 +3,10 @@
 # hartog/20120131: Heidi, the CI mistress
 
 require 'sinatra'
-require './lib/routes.rb'
+require 'heidi'
+require 'heidi/web'
+
+$heidi = Heidi.new
 
 # modular setup with all the freebees of a non modular setup.
-include Routes
+include Heidi::Web::Routes

@@ -2,6 +2,7 @@ source "http://rubygems.org"
 
 gem "thin"
 gem "sinatra"
+gem "simple_shell"
 
 group :development do
   gem "rspec", "~> 2.8.0"
