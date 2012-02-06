@@ -21,12 +21,12 @@ class Heidi
           res = hook.perform(build.build_root)
           if res.S?.to_i != 0
             log("--- Build hook #{hook.name} failed ---")
-            log(res.err)
+            log(res.err.empty? ? "no error message given" : res.err)
             build_failed = true
             break
 
           else
-            log(res.out)
+            log(res.out) unless res.out.empty?
           end
         end
 
@@ -83,12 +83,7 @@ class Heidi
 
 
     def log(string)
-      File.open(
-        File.join(project.log_root, "builder.log"),
-        File::CREAT|File::WRONLY|File::APPEND
-      ) do |f|
-        f.puts string
-      end
+      build.logs["builder.log"].raw(string)
     end
 
   end

@@ -2,11 +2,7 @@
 #
 # hartog/20120131: Heidi, the CI mistress
 
-require 'sinatra'
-require 'heidi'
+
 require 'heidi/web'
+Heidi::Web.start
 
-$heidi = Heidi.new
-
-# modular setup with all the freebees of a non modular setup.
-include Heidi::Web::Routes

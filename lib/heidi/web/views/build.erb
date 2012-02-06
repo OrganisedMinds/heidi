@@ -1,0 +1,20 @@
+<h1><%= project.name %></h1>
+
+<a href="/projects/<%= project.name %>"><< back</a>
+<br /><br />
+
+<h2 class="<%= build.status %>"><%= build.commit %></h2>
+
+| <% build.logs.each do |log| %>
+ <a href="#<%= log.file_name %>"><%= log.file_name %></a> |
+<% end %>
+<br class="clear" />
+<br />
+<br />
+
+<% build.logs.each do |log| %>
+  <h3 class="log"><%= log.file_name %></h3>
+  <a name="<%= log.file_name %>" href="#top" class="top">top</a>
+  <pre class="terminal"><%= ansi_color_codes(log.contents) %></pre>
+<% end %>
+<br /><br />

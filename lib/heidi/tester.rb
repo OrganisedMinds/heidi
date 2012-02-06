@@ -24,14 +24,14 @@ class Heidi
 
         if res.S?.to_i != 0
           log "--- test #{hook.name} failed ---"
-          log res.err
+          log(res.err.empty? ? "No error message given" : res.err)
 
           @message = "tests failed"
           tests_failed = true
           break
 
         else
-          log res.out
+          log(res.out) unless res.out.empty?
         end
       end
 
@@ -39,12 +39,7 @@ class Heidi
     end
 
     def log(string)
-      File.open(
-        File.join(build.root, "test.log"),
-        File::CREAT|File::WRONLY|File::APPEND
-      ) do |f|
-        f.puts string
-      end
+      build.logs["test.log"].raw(string)
     end
 
 

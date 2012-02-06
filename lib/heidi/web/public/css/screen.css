@@ -1,0 +1,93 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: white;
+  font: 13.34px helvetica, arial, clean, sans-serif;
+  *font-size: small;
+  text-align: center;
+}
+
+h1, h2, h3 {
+  margin-bottom: 1em;
+}
+
+h1 a {
+  text-decoration: none;
+  color: #000;
+}
+
+.failed, .color31 {
+  color: red !important;
+}
+
+.passed, .worked, .color32 {
+  color: green !important;
+}
+
+.errored, .color33 {
+  color: yellow !important;
+}
+
+p {
+  margin: 1em 0;
+}
+
+a {
+  color: #00a;
+}
+
+a:hover {
+  color: black;
+}
+
+a:visited {
+  color: #a0a;
+}
+
+table {
+  font-size: inherit;
+  font: 100%;
+}
+
+
+.container {
+  width: 80%;
+  text-align: justify;
+  margin: 2em auto;
+}
+
+pre.terminal {
+  font-family: 'Bitstream Vera Sans Mono', 'Courier', monospace;
+  border: 1px solid black;
+  background-color: #333;
+  color: white;
+  padding: 5px;
+  overflow: auto;
+  word-wrap: break-word;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+ul {
+  margin-left: 3em;
+}
+
+.top {
+  float: left;
+  padding-left: 2em;
+}
+
+.log {
+  float: left;
+}
+
+.clear {
+  clear: both;
+}

@@ -8,40 +8,46 @@ class Heidi
   # A build is tied to a commit
   #
   class Build
-    attr_reader :project, :commit, :root, :shell, :hooks
+    attr_reader :project, :commit, :root, :log_root, :build_root, :shell,
+      :hooks, :logs
 
     def initialize(project, commit=project.commit)
       @project = project
       @commit  = commit
-      @root    = File.join(project.root, "logs", commit)
+
+      @root       = File.join(project.root, "logs", commit)
+      @log_root   = File.join(@root, "logs")
+      @build_root = File.join(@root, "build")
 
       if !File.exists? @root
         SimpleShell.new(project.root).mkdir %W(-p #{@root})
       end
-
       @shell = SimpleShell.new(@root)
+
+      @shell.mkdir %W(-p #{@log_root}) unless File.exists?(@log_root)
+      @logs = Logs.new(@log_root)
     end
 
     def load_hooks
       log :info, "Loading hooks"
       @hooks  = {
-        :build  => [],
-        :tests  => [],
-        :before => [],
-        :after  => [],
-        :failed => [],
+        :build   => [],
+        :tests   => [],
+        :before  => [],
+        :success => [],
+        :failure => [],
       }
 
       @hooks.keys.each do |key|
         log :debug, "Loading #{key} hooks"
 
-        Dir[File.join(project.root, "hooks", key.to_s, "*")].each do |hook|
+        Dir[File.join(project.root, "hooks", key.to_s, "*")].sort.each do |hook|
           next if File.directory? hook
           next unless File.executable? hook
 
           log :debug, "Loaded hook: #{hook}"
 
-          @hooks[key] << Heidi::Hook.new(self.project, hook)
+          @hooks[key] << Heidi::Hook.new(self, hook)
         end
       end
 
@@ -49,13 +55,26 @@ class Heidi
     end
 
     def clean
-      %w(heidi.info heidi.errors test.log builder.log build SUCCESS FAILURE).each do |inode|
+      1.downto(0) do |i|
+        if File.exists? "#{@log_root}.#{i}"
+          if i - 1 < 0
+            shell.mv %W(#{@log_root}.#{i} #{@log_root}.#{i+1})
+          else
+            shell.rm %W(-rf #{@log_root}.#{i})
+          end
+        end
+      end
+
+      if File.exists? "#{@log_root}"
+        shell.mv %W(#{@log_root} #{@log_root}.0)
+      end
+
+      %w(build/ SUCCESS FAILURE).each do |inode|
         shell.rm("-r", "-f", inode) if File.exists? File.join(@root, inode)
       end
-    end
 
-    def build_root
-      File.join(@root, "build")
+      # re-instate the logs
+      @shell.mkdir %W(-p #{@log_root})
     end
 
     def log(type, msg)
@@ -66,12 +85,7 @@ class Heidi
         "heidi.#{type}"
       end
 
-      File.open(
-        File.join(@root, name),
-        File::CREAT|File::WRONLY|File::APPEND
-      ) do |f|
-        f.puts "%s\t%s" % [ Time.now.strftime("%c"), msg ]
-      end
+      logs[name].write(msg)
     end
 
     def lock_file
@@ -134,14 +148,56 @@ class Heidi
           "DNF"
     end
 
-    def logs(what)
-      File.read(File.join(@root, what))
-    rescue
-      ""
-    end
-
     def create_tar_ball
       # TODO
     end
+
+    class Logs
+      def initialize(log_root)
+        @log_root = log_root
+        @logs = []
+
+        Dir[File.join(@log_root, "*")].each do |file|
+          @logs << Log.new(file)
+        end
+      end
+
+      def [](key)
+        log = @logs.select { |log| log.file_name == "#{key}" }.first
+        if log.nil?
+          @logs << ( log = Log.new( File.join(@log_root, "#{key}") ) )
+        end
+
+        return log
+      end
+
+      def each(&block)
+        @logs.each(&block)
+      end
+
+      class Log
+        attr_reader :file_name, :contents
+        def initialize(file)
+          @file      = file
+          @file_name = File.basename(file)
+          @contents  = File.read(file) rescue ""
+        end
+
+        def write(msg,fmt=true)
+          File.open(@file, File::CREAT|File::APPEND|File::WRONLY) do |f|
+            if fmt == true
+              f.puts "%s\t%s" % [ Time.now.strftime("%c"), msg ]
+            else
+              f.puts msg
+            end
+          end
+        end
+
+        def raw(msg)
+          write(msg, false)
+        end
+      end
+    end
+
   end
 end

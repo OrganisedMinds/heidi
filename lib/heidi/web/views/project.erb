@@ -1,0 +1,11 @@
+<h1><%= project.name %></h1>
+
+<h2 class="<%= project.build_status %>"><%= project.build_status %></h2>
+
+<h2>Build history</h2>
+
+<ul>
+  <% project.builds.each do |build| %>
+    <li class="<%= build.status %>"><a href='/projects/<%= project.name %>/build/<%= build.commit %>'><%= build.commit %></a> - <%= build.status %></li>
+  <% end %>
+</ul>

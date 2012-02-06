@@ -1,0 +1,7 @@
+<br />
+<img src='/images/heidi.jpeg' />
+
+<h1>Projects</h1>
+<ul><% projects.each do |project| %>
+  <li><a href="/projects/<%= project.name %>"><%= project.name %></a> - <%= project.build_status %></li>
+<% end %></ul>

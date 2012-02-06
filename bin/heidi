@@ -1,70 +1,74 @@
-#!/bin/sh
+#!/usr/bin/env ruby
 
-command=$1
-for_a=$2
+require 'simple_shell'
+require 'heidi'
 
-check_heidi_root()
-{
-  if [ ! -e ./projects ] && [ ! -d ./projects ]
-  then
-    echo "You're not inside Heidi" >&2
+cmd   = ARGV.shift
+for_a = ARGV.shift
+
+shell = SimpleShell.new
+
+def check_heidi_root()
+  if !File.exists?("./projects")  && File.directory?("./projects")
+    $stderr.puts "You're not inside Heidi"
     exit 1
-  fi
-}
+  end
+end
 
-case $command in
-  new)
-    echo "creating $for_a"
-    echo "creating $for_a/projects"
-    mkdir -p $for_a/projects
-    echo "creating $for_a/bin"
-    mkdir -p $for_a/bin
-  ;;
+case cmd
+when "new"
+  puts "creating #{for_a}"
+  puts "creating #{for_a}/projects"
+  shell.mkdir %W(-p #{for_a}/projects)
+  puts "creating #{for_a}/bin"
+  shell.mkdir %W(-p #{for_a}/bin)
 
-  project)
-    check_heidi_root
+when "project"
+  check_heidi_root
 
-    # create a logs dir
-    echo "creating projects/$for_a"
-    echo "creating projects/$for_a/logs"
-    mkdir -p projects/$for_a/logs
+  # create a logs dir
+  puts "creating projects/#{for_a}"
+  puts "creating projects/#{for_a}/logs"
+  shell.mkdir %W(-p projects/#{for_a}/logs)
 
-    echo "creating projects/$for_a/hooks/build"
-    echo "creating projects/$for_a/hooks/tests"
-    mkdir -p projects/$for_a/hooks/build
-    mkdir -p projects/$for_a/hooks/tests
+  %w(build tests failure success before).each do |hook|
+    puts "creating projects/#{for_a}/hooks/#{hook}"
+    shell.mkdir %W(-p projects/#{for_a}/hooks/#{hook})
+  end
 
-    # make a clone
-    cd projects/$for_a
-    echo "filling $for_a cache"
-    git clone $3 cached
-    cd cached
+  # make a clone
+  shell.in("projects/#{for_a}") do |sh|
+    puts "filling #{for_a} cache"
+    repo = ARGV.shift
+    puts "git clone #{repo}"
+    sh.git %W(clone #{repo} cached)
 
-    echo "setting the name of the project to: $for_a"
-    git config heidi.name $for_a
-  ;;
+    sh.in("cached") do |cached|
+      puts "setting the name of the project to: #{for_a}"
+      cached.git %W(config heidi.name #{for_a})
+    end
+  end
+  puts "\n"
+  puts "Now define some hooks in projects/#{for_a}/hooks/tests"
 
-  drop)
-    check_heidi_root
+when "drop"
+  check_heidi_root
 
-    # remove build and cache dir, expose logs directly
-    echo "removing build dir"
-    rm -r projects/$for_a/build
-    echo "removing cache (preserving project config)"
-    cp -pr projects/$for_a/cached/.git/config projects/$for_a
-    rm -r projects/$for_a/cached
-    echo "exposing builds"
-    mv projects/$for_a/logs/* projects/$for_a/
-    rm -r projects/$for_a/logs
-  ;;
-  web)
-    check_heidi_root
+  # remove build and cache dir, expose logs directly
+  puts "removing build dir"
+  shell.rm %W(-r projects/#{for_a}/build)
+  puts "removing cache (preserving project config)"
+  shell.cp %W(-pr projects/#{for_a}/cached/.git/config projects/#{for_a})
+  shell.rm %W(-r projects/#{for_a}/cached)
+  puts "exposing builds"
+  shell.mv %W(projects/#{for_a}/logs/* projects/#{for_a}/)
+  shell.rm %W(-r projects/#{for_a}/logs)
 
-    heidi_web
-  ;;
-  console)
-    check_heidi_root
+when "integrate"
+  heidi = Heidi.new
+  heidi.projects.each do |project|
+    next if !for_a.nil? && project.name != for_a
+    project.fetch && project.integrate
+  end
 
-    heidi_console
-  ;;
-esac
+end

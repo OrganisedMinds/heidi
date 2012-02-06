@@ -2,6 +2,8 @@ source "http://rubygems.org"
 
 gem "thin"
 gem "sinatra"
+# gem 'sinatra-assetpack'
+gem 'sinatra-assetpack', :require => 'sinatra/assetpack', :git => 'git://github.com/rstacruz/sinatra-assetpack.git'
 gem "simple_shell"
 
 group :development do
