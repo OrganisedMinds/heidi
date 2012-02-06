@@ -63,7 +63,7 @@ class Heidi
 
       hooks_failed = false
       build.hooks[where].each do |hook|
-        res = hook.perform(build.build_root)
+        res = hook.perform
 
         if res.S?.to_i != 0
           build.log :error, "--- #{where} hook: #{hook.name} failed ---"

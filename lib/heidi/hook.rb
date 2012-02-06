@@ -9,9 +9,14 @@ class Heidi
     end
 
     def perform(where=build.build_root)
+      # before / failure hooks might like this
+      if !File.exists?(where)
+        where = build.root
+      end
+
       env = {
         'HEIDI_LOG_DIR'   => build.log_root,
-        'HEIDI_BUILD_DIR' => build.build_root,
+        'HEIDI_BUILD_DIR' => where
       }
 
       shell = SimpleShell.new(where, env)
