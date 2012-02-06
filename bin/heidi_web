@@ -2,7 +2,16 @@
 #
 # hartog/20120131: Heidi, the CI mistress
 
+if %w(-h --h --help -help -? /?).include? ARGV[0]
+  $stderr.puts "heidi_web [host] [port] [/path/to/projects_dir]"
+  exit 1
+end
 
 require 'heidi/web'
-Heidi::Web.start
+args = []
+while !ARGV[0].nil? && !ARGV[0].empty?
+  args << ARGV.shift
+end
+
+Heidi::Web.start(*args)
 
