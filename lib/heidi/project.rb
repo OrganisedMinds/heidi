@@ -75,8 +75,7 @@ class Heidi
     end
 
     def fetch
-      @git.fetch
-      if integration_branch
+      if integration_branch && git.branch != integration_branch
         if @git.branches.include? integration_branch
           @git.switch(integration_branch)
           @git.merge "origin/#{integration_branch}"
@@ -86,6 +85,8 @@ class Heidi
 
         end
       end
+
+      @git.pull
 
       record_last_commit
     end
