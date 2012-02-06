@@ -19,7 +19,6 @@ class Heidi
     }
 
     dir = File.dirname(File.expand_path(__FILE__))
-    $stderr.puts dir
 
     set :sessions, true
 
