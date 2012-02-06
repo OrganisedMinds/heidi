@@ -22,6 +22,16 @@ when "new"
   shell.mkdir %W(-p #{for_a}/projects)
   puts "creating #{for_a}/bin"
   shell.mkdir %W(-p #{for_a}/bin)
+  puts "creating #{for_a}/Gemfile"
+  File.open("#{for_a}/Gemfile", File::CREAT|File::WRONLY) do |f|
+    f.puts 'source "http://rubygems.org"'
+    f.puts 'gem "heidi"'
+  end
+
+  puts "running bundle install"
+  shell.in(for_a) do |sh|
+    sh.bundle "install"
+  end
 
 when "project"
   check_heidi_root
