@@ -50,6 +50,13 @@ class Heidi
       @git["build.latest"] = self.commit
     end
 
+    def current_build
+      @git["build.current"]
+    end
+    def record_current_build
+      @git["build.current"] = self.commit
+    end
+
     def build_status
       @git["build.status"]
     end
@@ -75,7 +82,7 @@ class Heidi
     end
 
     def fetch
-      if integration_branch && git.branch != integration_branch
+      if integration_branch && @git.branch != integration_branch
         if @git.branches.include? integration_branch
           @git.switch(integration_branch)
           @git.merge "origin/#{integration_branch}"
@@ -88,7 +95,11 @@ class Heidi
 
       @git.pull
 
-      record_last_commit
+      # when the head has changed, update some stuff
+      if last_commit != self.commit
+        record_last_commit
+        record_current_build
+      end
     end
 
     def lock(&block)

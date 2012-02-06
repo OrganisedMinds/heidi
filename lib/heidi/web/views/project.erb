@@ -1,6 +1,22 @@
 <h1><%= project.name %></h1>
 
+<a href="/"><< back</a><br /><br />
 <h2 class="<%= project.build_status %>"><%= project.build_status %></h2>
+
+<%
+  builds = project.builds
+  current = builds.select { |b| b.commit == project.current_build }.first
+%>
+
+<% unless current.nil? %>
+  <% builds -= [ current ] %>
+  <h2>Current build</h2>
+  <a class="<%= current.status %>" href="/projects/<%= project.name %>/build/<%= current.commit %>"><%= current.commit %></a>
+  <br />
+  <br />
+  <br />
+<% end %>
+
 
 <h2>Build history</h2>
 
