@@ -68,7 +68,11 @@ when "integrate"
   heidi = Heidi.new
   heidi.projects.each do |project|
     next if !for_a.nil? && project.name != for_a
-    project.fetch && project.integrate
+    project.fetch
+    msg = project.integrate
+    unless msg.nil?
+      $stderr.puts "#{project.name}: #{msg}"
+    end
   end
 
 end
