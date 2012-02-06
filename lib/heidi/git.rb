@@ -18,7 +18,7 @@ class Heidi
 
     # get the latest commit hash
     def commit
-      res = @shell.git "log", "-n", "1", "--pretty=%H"
+      res = @shell.git "log", "-n", "1", "--pretty=format:%H"
       res.out
     end
     alias_method :HEAD, :commit
