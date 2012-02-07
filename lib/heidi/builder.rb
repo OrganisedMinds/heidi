@@ -82,7 +82,7 @@ class Heidi
 
     def create_tar_ball
       shell = SimpleShell.new(build.root)
-      shell.mv %W(build, #{build.commit})
+      shell.mv %W(build #{build.commit})
       tar = shell.tar %W(-cjf #{build.commit}.tar.bz2 #{build.commit})
       if tar.S?.to_i == 0
         shell.rm %W(-rf #{build.commit}/)

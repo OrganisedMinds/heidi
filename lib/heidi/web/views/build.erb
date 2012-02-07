@@ -5,6 +5,11 @@
 
 <h2 class="<%= build.status %>"><%= build.commit %></h2>
 
+<% if build.status == "passed" %>
+ <a href='/projects/<%= project.name %>/build/<%= build.commit %>/tar_ball'>download</a>
+<br /><br />
+<% end %>
+
 | <% build.logs.each do |log| %>
  <a href="#<%= log.file_name %>"><%= log.file_name %></a> |
 <% end %>

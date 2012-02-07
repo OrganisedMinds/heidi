@@ -105,6 +105,7 @@ class Heidi
     end
 
     def unlock
+      return unless locked?
       log(:info, "Unlocking build")
       File.unlink lock_file
     end
@@ -148,8 +149,12 @@ class Heidi
           "DNF"
     end
 
-    def create_tar_ball
-      # TODO
+    # file handle to tar ball
+    def tar_ball
+      ball = File.join(@root, "#{commit}.tar.bz2")
+
+      return nil if !File.exists?(ball)
+      return File.open(ball, File::RDONLY)
     end
 
     class Logs

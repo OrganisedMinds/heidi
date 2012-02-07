@@ -27,10 +27,10 @@ class Heidi
     set :root, dir
 
     get '/' do
-      redirect '/projects', 302
+      redirect '/projects/', 302
     end
 
-    get '/projects' do
+    get '/projects/' do
       erb(:home, { :locals => { :projects => @heidi.projects }})
     end
 
@@ -52,6 +52,36 @@ class Heidi
       # load build of project
       build = Heidi::Build.new(project, params[:commit])
       erb(:build, { :locals => { :build => build, :project => project }})
+    end
+
+    get '/projects/:name/build/:commit/tar_ball' do
+      project = @heidi[params[:name]]
+      if project.nil?
+        return "no project by that name: #{params[:name]}"
+      end
+
+      # load build of project
+      build = Heidi::Build.new(project, params[:commit])
+
+      ball = build.tar_ball
+      if ball.nil?
+        return "no tar ball here..."
+      end
+
+      content_type 'application/x-tar'
+      headers "Content-type" => "application/x-tar",
+        "Content-disposition" => "attachment; filename=#{build.commit}.tar.bz2"
+
+      stream do |out|
+        while true
+          begin
+            out << ball.sysread(1024)
+          rescue EOFError
+            break
+          end
+        end
+      end
+
     end
 
     put '/projects/:name/build' do
