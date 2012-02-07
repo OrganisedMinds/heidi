@@ -8,9 +8,10 @@ class Heidi
     attr_reader :build, :project
 
     def initialize(project)
-      @project = project
-      @build   = Heidi::Build.new(project)
-      @failed  = false
+      @project   = project
+      @build     = Heidi::Build.new(project)
+      @failed    = false
+      @hooks_ran = []
     end
 
     def failure
@@ -32,9 +33,11 @@ class Heidi
     end
 
     def integrate
-      @start = Time.now
-      build.lock
       build.load_hooks
+      return "no test hooks!" if build.hooks[:tests].empty?
+
+      build.lock
+      @start = Time.now
       build.clean
 
       return failure if !run_hooks(:before)
@@ -64,11 +67,10 @@ class Heidi
       # always unlock the build root, no matter what
       build.unlock
 
-      return @failed == true ? false : true
-
     end
 
     def run_hooks(where)
+      return true if @hooks_ran.include?(where)
       return true if build.hooks[where].nil? || build.hooks[where].empty?
 
       hooks_failed = false
@@ -86,6 +88,8 @@ class Heidi
           build.log :info, res.out
         end
       end
+
+      @hooks_ran << where
 
       return hooks_failed == true ? false : true
     end

@@ -72,10 +72,17 @@ class Heidi
     def integrate
       return "locked" if locked?
 
-      status = ""
+      status = "unknown"
+
       self.lock do
         res = Heidi::Integrator.new(self).integrate
-        status = res != true ? "failed" : "passed"
+        if res == true
+          status = nil
+        elsif res.is_a? String
+          status = res
+        else
+          status = "failed"
+        end
       end
 
       return status
