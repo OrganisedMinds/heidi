@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "heidi"
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Hartog C. de Mik"]
-  s.date = "2012-02-06"
+  s.date = "2012-02-07"
   s.description = "CI-Joe alike CI system called Heidi."
   s.email = "hartog@organisedminds.com"
   s.executables = ["heidi", "heidi_console", "heidi_cron", "heidi_web"]
@@ -69,7 +69,6 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<thin>, [">= 0"])
       s.add_runtime_dependency(%q<sinatra>, [">= 0"])
-      s.add_runtime_dependency(%q<sinatra-assetpack>, [">= 0"])
       s.add_runtime_dependency(%q<simple_shell>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
@@ -79,7 +78,6 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<thin>, [">= 0"])
       s.add_dependency(%q<sinatra>, [">= 0"])
-      s.add_dependency(%q<sinatra-assetpack>, [">= 0"])
       s.add_dependency(%q<simple_shell>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
@@ -90,7 +88,6 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<thin>, [">= 0"])
     s.add_dependency(%q<sinatra>, [">= 0"])
-    s.add_dependency(%q<sinatra-assetpack>, [">= 0"])
     s.add_dependency(%q<simple_shell>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.8.0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
