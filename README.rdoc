@@ -4,8 +4,94 @@ A Continious Integration thingy. Naive, and therefor called Heidi.
 
 http://www.tv-nostalgie.de/sound/Heidi2.jpg
 
-Heidi is still taking form and is/will-be used to do CI at OrganisedMinds.com
+Heidi is still taking form and is used to do CI at OrganisedMinds.com
 (http://organisedminds.com) - Why don't you sign up there? It's free!
+
+== The basics
+
+Install heidi
+
+  # gem install heidi
+
+Create a new CI projects root
+
+  % heidi new ci_root
+  creating ci_root
+  creating ci_root/projects
+  creating ci_root/bin
+  creating ci_root/Gemfile
+  running bundle install
+
+Create a first project to track
+
+  % cd ci_root
+  % heidi project simple_shell git://github.com/coffeeaddict/simple_shell
+  creating projects/simple_shell
+  creating projects/simple_shell/logs
+  creating projects/simple_shell/hooks/build
+  creating projects/simple_shell/hooks/tests
+  creating projects/simple_shell/hooks/failure
+  creating projects/simple_shell/hooks/success
+  creating projects/simple_shell/hooks/before
+  filling simple_shell cache
+  git clone git://github.com/coffeeaddict/simple_shell
+  setting the name of the project to: simple_shell
+
+  Now define some hooks in projects/simple_shell/hooks/tests
+
+== Configuration
+
+The configuration for each project is stored in it's cached clone.
+(projects/$project/cached). This is done using git-config(1). See
+projects/$project/cached/.git/config to find the heidi name.
+
+The following are available for you to edit:
+
+  [heidi]
+    name = Human Readable Name
+  [heidi "build"]
+    branch = branch_to_use_for_integration
+
+And these are being set (and used) by Heidi. Please dont edit (unless...)
+
+  [heidi]
+    commit = acc53b9c5
+  [heidi "build"]
+    status = failed
+    current = acc53b9c5
+
+== Hooks
+
+There is a hooks directory inside your projects directory, and it has the
+following directories:
+
+  - before/
+  - build/
+  - test/
+  - success/
+  - failure/
+
+If you place shell scripts in these directories and make them executable,
+these scripts will be executed inside the build directory at a given time.
+
+[before]   Runs before the build starts
+[build]    After the git-project has been checked out at the right branch
+[test]     To perform tests. You must have at least 1 test hook
+[success]  Is run when the tests where performed in good order. Send huray
+           emails here
+[failure]  Is run when the tests failed. Send he-or-she-broke-it emails here.
+
+== History
+
+Heidi keeps history; projects/$projects/logs/* is where all the integration
+attempts live. You can remove old attempts without any problem.
+
+Any build is named after it's commit hash (5f6db178c for instance)
+
+== Tar balls
+
+Any successful integration attempt is stored in a tar-ball with the name of
+the build (5f6db178c.tar.bz2) inside projects/$project/logs/$build/
 
 == Contributing to heidi
 
