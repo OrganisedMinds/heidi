@@ -16,7 +16,10 @@ class Heidi
 
       env = {
         'HEIDI_LOG_DIR'   => build.log_root,
-        'HEIDI_BUILD_DIR' => where
+        'HEIDI_BUILD_DIR' => where,
+        'RUBYOPT'         => nil,
+        'BUNDLE_BIN_PATH' => nil,
+        'BUNDLE_GEMFILE'  => nil,
       }
 
       shell = SimpleShell.new(where, env)
