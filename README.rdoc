@@ -93,6 +93,35 @@ Any build is named after it's commit hash (5f6db178c for instance)
 Any successful integration attempt is stored in a tar-ball with the name of
 the build (5f6db178c.tar.bz2) inside projects/$project/logs/$build/
 
+== Locking
+
+Heidi locks the projects she's working on. Letting two Heidi's onto the
+mountain should not be a problem. If you believe a project's lock is stale
+just remove projects/$project/.lock
+
+== Integrating
+
+With crontab for instance...
+
+  PATH=$PATH:/usr/local/bin
+  MAILTO=icann@example.org
+
+  # m h  dom mon dow   command
+  */5 * * * 1-6   cd /path/to/heidi_root && bundle exec heidi integrate
+
+Or by hand
+
+  heidi integrate [$project]
+
+== Results
+
+And off course you would like to see some results...
+
+  % cd /path/to/heidi
+  % heidi_web
+
+Just make sure to set your firewall straight
+
 == Contributing to heidi
 
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
