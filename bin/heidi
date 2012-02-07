@@ -91,7 +91,7 @@ when "integrate"
     next if !for_a.nil? && project.name != for_a
     project.fetch
     msg = project.integrate
-    unless msg.nil?
+    unless msg.nil? || msg == true
       $stderr.puts "#{project.name}: #{msg}"
     end
   end
