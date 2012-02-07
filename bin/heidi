@@ -58,8 +58,17 @@ when "project"
       cached.git %W(config heidi.name #{for_a})
     end
   end
+  puts "Creating default test hook: projects/#{for_a}/hooks/test/01_rspec"
+  File.open("projects/#{for_a}/hooks/tests/01_rspec", File::CREAT|File::WRONLY) do |f|
+    f.puts %q(#!/bin/sh
+
+# edit this file to your needs
+bundle exec rake spec
+)
+  end
+  shell.chmod %W(+x projects/#{for_a}/hooks/test/01_rspec)
   puts "\n"
-  puts "Now define some hooks in projects/#{for_a}/hooks/tests"
+  puts "Now edit or add some hooks and run: heidi integrate #{for_a}"
 
 when "drop"
   check_heidi_root
