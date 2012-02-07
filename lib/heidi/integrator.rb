@@ -15,11 +15,24 @@ class Heidi
 
     def failure
       @failed = true
+      run_hooks(:failure)
+      build.log :info, ("Integration failed after: %.2fs" % (Time.now - @start))
+
       build.record(:failure)
+
+      return false
+    end
+
+    def success
+      # record the new succesful
+      build.record(:success)
+      build.log :info, ("Integration took: %.2fs" % (Time.now - @start))
+
+      return true
     end
 
     def integrate
-      start = Time.now
+      @start = Time.now
       build.lock
       build.load_hooks
       build.clean
@@ -31,16 +44,13 @@ class Heidi
 
       return failure if !builder.build!
       return failure if !tester.test!
-      return failure if !run_hooks(:after)
 
-      # record the new succesful
-      build.record(:success)
+      return failure if !run_hooks(:success)
 
       # create a tarball
       builder.create_tar_ball
 
-      build.log :info, ("Integration took: %.2fs" % (Time.now - start))
-      return true
+      return success
 
     rescue Exception => e
       $stderr.puts e.message
