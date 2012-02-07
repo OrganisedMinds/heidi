@@ -31,9 +31,9 @@ class Heidi
     def load_hooks
       log :info, "Loading hooks"
       @hooks  = {
+        :before  => [],
         :build   => [],
         :tests   => [],
-        :before  => [],
         :success => [],
         :failure => [],
       }
