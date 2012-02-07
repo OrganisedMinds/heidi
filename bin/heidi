@@ -6,6 +6,8 @@ require 'heidi'
 cmd   = ARGV.shift
 for_a = ARGV.shift
 
+ENV['PATH'] = "/bin:/usr/bin:/usr/local/bin"
+
 shell = SimpleShell.new
 
 def check_heidi_root()
