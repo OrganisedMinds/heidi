@@ -37,7 +37,7 @@ class Heidi
       build.record(:success)
 
       # create a tarball
-      build.create_tar_ball
+      builder.create_tar_ball
 
       build.log :info, ("Integration took: %.2fs" % (Time.now - start))
       return true

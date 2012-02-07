@@ -39,7 +39,6 @@ class Heidi
       return true
     end
 
-
     def setup_build_dir
       if File.exists? build.build_root
         build.log(:info, "Removing previous build")
@@ -81,6 +80,16 @@ class Heidi
       return true
     end
 
+    def create_tar_ball
+      shell = SimpleShell.new(build.root)
+      shell.mv %W(build, #{build.commit})
+      tar = shell.tar %W(-cjf #{build.commit}.tar.bz2 #{build.commit})
+      if tar.S?.to_i == 0
+        shell.rm %W(-rf #{build.commit}/)
+      else
+        build.log(:error, "Creating tar-ball failed: #{tar.err}")
+      end
+    end
 
     def log(string)
       build.logs["builder.log"].raw(string)
