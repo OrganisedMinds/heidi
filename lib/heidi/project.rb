@@ -71,6 +71,7 @@ class Heidi
 
     def integrate
       return "locked" if locked?
+      return true if self.current_build == self.commit
 
       status = "unknown"
 
