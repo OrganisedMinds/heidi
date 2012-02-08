@@ -97,7 +97,11 @@ class Heidi
     helpers do
       def ansi_color_codes(string)
         string.gsub(/\e\[0?m/, '</span>').
-          gsub(/\e\[([\d\;]+)m/, "<span class=\"color\\1\">")
+          gsub /\e\[[^m]+m/ do |codes|
+            colors = codes.gsub(/[\e\[m]+/, '')
+            classes = colors.split(";").collect { |c| "color#{c}" }
+            "<span class=\"#{classes.join(" ")}\">"
+          end
       end
     end
   end

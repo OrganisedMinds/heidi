@@ -23,6 +23,26 @@ h1 a {
   color: #000;
 }
 
+.color1 {
+  font-weight: bold;
+}
+
+.color3 {
+  font-style: italic;
+}
+
+.color4 {
+  text-decoration: underline;
+}
+
+.color9 {
+  text-decoration: line-through;
+}
+
+.color30 {
+  color: black !important;
+}
+
 .failed, .color31 {
   color: red !important;
 }
@@ -33,6 +53,56 @@ h1 a {
 
 .errored, .color33 {
   color: yellow !important;
+}
+
+.color34 {
+  color: blue !important;
+}
+
+.color35 {
+  color: purple !important;
+}
+
+.color36 {
+  color: aqua !important;
+}
+
+.color37, .color39 {
+  color: white !important;
+}
+
+.color40, .color49 {
+  background-color: #333;
+}
+
+.color41 {
+  background-color: red;
+}
+
+.color42 {
+  background-color: green;
+}
+
+.color43 {
+  background-color: yellow;
+}
+
+.color44 {
+  background-color:  blue;
+}
+
+.color45 {
+  background-color: purple;
+}
+.color46 {
+  background-color: aqua;
+}
+.color47 {
+  background-color: white;
+}
+
+.status {
+  padding-left: 2em;
 }
 
 p {
@@ -105,4 +175,9 @@ ul {
   width: 48%;
   margin-right: 10px;
   float: left;
+}
+
+.label {
+  display: inline-block;
+  min-width: 120px;
 }
