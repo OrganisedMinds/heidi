@@ -91,7 +91,7 @@ class Heidi
           break
 
         else
-          build.log :info, "#{hook.output.lines.collect { |l| "\t#{l}" }.join("\n")}"
+          build.log :info, "#{hook.output.lines.collect { |l| "\t#{l}" }.join("")}"
         end
 
         build.log(:info, ("Took %.2fs" % (Time.now-start)))
