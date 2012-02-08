@@ -4,7 +4,7 @@ require 'time'
 class Heidi
   # An integration is called a build.
   # The collections of builds is the log of the project.
-  # A single build lives in $project/logs
+  # A single build lives in $project/
   # A build is tied to a commit
   #
   class Build
@@ -77,7 +77,7 @@ class Heidi
       @shell.mkdir %W(-p #{@log_root})
     end
 
-    def log(type, msg)
+    def log(type, msg, raw=false)
       name = case type
       when :error
         "heidi.errors"
@@ -85,7 +85,7 @@ class Heidi
         "heidi.#{type}"
       end
 
-      logs[name].write(msg)
+      logs[name].send(raw == false ? :write : :raw, msg)
     end
 
     def lock_file

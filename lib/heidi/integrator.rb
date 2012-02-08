@@ -85,13 +85,13 @@ class Heidi
         if hook.failed?
           build.log :info, "\tfailed. See heidi.error"
           build.log :error, "--- #{hook.name}: failed ---"
-          build.log :error, hook.message
+          build.log :error, hook.message, true
 
           hooks_failed = true
           break
 
         else
-          build.log :info, "#{hook.output.lines.collect { |l| "\t#{l}" }.join("")}"
+          build.log :info, "#{hook.output.lines.collect { |l| "\t#{l}" }.join("")}", true
         end
 
         build.log(:info, ("Took %.2fs" % (Time.now-start)))
