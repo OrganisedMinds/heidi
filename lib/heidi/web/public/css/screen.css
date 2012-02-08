@@ -75,6 +75,15 @@ pre.terminal {
   clear: both;
 }
 
+.terminal a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: dashed #ccc 1px;
+  margin: 4px 0;
+  display: inline-block;
+}
+
 ul {
   margin-left: 3em;
 }
@@ -90,4 +99,10 @@ ul {
 
 .clear {
   clear: both;
+}
+
+.column {
+  width: 48%;
+  margin-right: 10px;
+  float: left;
 }

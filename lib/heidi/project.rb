@@ -21,6 +21,15 @@ class Heidi
         next unless File.directory? build
         @builds << Heidi::Build.new(self, File.basename(build))
       end
+
+      def @builds.find(commit)
+        return nil unless commit.is_a?(String)
+        return nil unless commit.length >= 5
+
+        self.select do |build|
+          build.commit == commit || build.commit =~ Regexp.new(commit)
+        end.first
+      end
     end
 
     def name=(name)
@@ -119,6 +128,19 @@ class Heidi
         yield
         self.unlock
       end
+    end
+
+    def log
+      shell = SimpleShell.new(@cached_root)
+      log = shell.git %W(log -n40 --color --graph --pretty=oneline --abbrev-commit)
+
+      lines = []
+      log.out.lines.each do |line|
+        commit = line.scan(/^[|*\s\e\[m\d]+(\w+)/).flatten.first
+        lines << { :line => line, :build => builds.find(commit) }
+      end
+
+      return lines
     end
 
     def unlock

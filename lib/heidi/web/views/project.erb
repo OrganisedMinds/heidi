@@ -1,27 +1,34 @@
 <h1><%= project.name %></h1>
 
 <a href="/"><< back</a><br /><br />
-<h2 class="<%= project.build_status %>"><%= project.build_status %></h2>
+<div class="column">
+  <h2 class="<%= project.build_status %>"><%= project.build_status %></h2>
 
-<%
-  builds = project.builds
-  current = builds.select { |b| b.commit == project.current_build }.first
-%>
+  <%
+    builds = project.builds
+    current = builds.select { |b| b.commit == project.current_build }.first
+  %>
 
-<% unless current.nil? %>
-  <% builds -= [ current ] %>
-  <h2>Current build</h2>
-  <a class="<%= current.status %>" href="/projects/<%= project.name %>/build/<%= current.commit %>"><%= current.commit %></a>
-  <br />
-  <br />
-  <br />
-<% end %>
-
-
-<h2>Build history</h2>
-
-<ul>
-  <% project.builds.each do |build| %>
-    <li class="<%= build.status %>"><a href='/projects/<%= project.name %>/build/<%= build.commit %>'><%= build.commit %></a> - <%= build.status %></li>
+  <% unless current.nil? %>
+    <% builds -= [ current ] %>
+    <h2>Current build</h2>
+    <a class="<%= current.status %>" href="/projects/<%= project.name %>/build/<%= current.commit %>"><%= current.commit %></a>
+    <br />
+    <br />
+    <br />
   <% end %>
-</ul>
+
+  <h2>Build history</h2>
+
+  <ul>
+    <% builds.each do |build| %>
+      <li class="<%= build.status %>"><a href='/projects/<%= project.name %>/build/<%= build.commit %>'><%= build.commit %></a> - <%= build.status %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="column">
+  <pre class="terminal"><% project.log.each do |line| %><% build = nil; if (build = line[:build]) %><a href="/projects/<%= project.name %>/build/<%= build.commit %>"><%= ansi_color_codes(line[:line]).chomp %></a>
+<% else %><%= ansi_color_codes line[:line] %>
+<% end %><% end %></pre>
+</div>
