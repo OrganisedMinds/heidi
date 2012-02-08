@@ -90,6 +90,7 @@ class Heidi
       status = "unknown"
 
       self.lock do
+        record_current_build
         res = Heidi::Integrator.new(self).integrate
         if res == true
           status = nil
@@ -120,7 +121,6 @@ class Heidi
       # when the head has changed, update some stuff
       if last_commit != self.commit
         record_last_commit
-        record_current_build
       end
     end
 
