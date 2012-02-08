@@ -39,8 +39,8 @@ h1 a {
   text-decoration: line-through;
 }
 
-.color30 {
-  color: black !important;
+.DNF, .color30 {
+  color: #333 !important;
 }
 
 .failed, .color31 {
@@ -71,7 +71,7 @@ h1 a {
   color: white !important;
 }
 
-.DNF, .color40, .color49 {
+.color40, .color49 {
   background-color: #333;
 }
 
