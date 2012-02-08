@@ -51,7 +51,7 @@ h1 a {
   color: green !important;
 }
 
-.errored, .color33 {
+.terminal.DNF, .errored, .color33 {
   color: yellow !important;
 }
 
@@ -71,7 +71,7 @@ h1 a {
   color: white !important;
 }
 
-.color40, .color49 {
+.DNF, .color40, .color49 {
   background-color: #333;
 }
 
@@ -110,7 +110,7 @@ p {
 }
 
 a {
-  color: #00a;
+  color: #333;
 }
 
 a:hover {
@@ -118,7 +118,7 @@ a:hover {
 }
 
 a:visited {
-  color: #a0a;
+  color: #333;
 }
 
 table {
