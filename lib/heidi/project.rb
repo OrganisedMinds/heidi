@@ -5,14 +5,17 @@ require 'time'
 
 class Heidi
   class Project
-    attr_reader :root, :cached_root, :lock_file, :builds
+    attr_reader :root, :cached_root, :lock_file
 
     def initialize(root)
       @root        = root
       @lock_file   = File.join(root, ".lock")
       @cached_root = File.join(root, "cached")
       @git         = Heidi::Git.new(@cached_root)
-      load_builds
+    end
+
+    def builds
+      @builds || load_builds
     end
 
     def load_builds
@@ -27,9 +30,11 @@ class Heidi
         return nil unless commit.length >= 5
 
         self.select do |build|
-          build.commit == commit || build.commit =~ Regexp.new(commit)
+          build.commit == commit || build.commit =~ Regexp.new("^#{commit}")
         end.first
       end
+
+      return @builds
     end
 
     def name=(name)
@@ -136,7 +141,8 @@ class Heidi
 
       lines = []
       log.out.lines.each do |line|
-        commit = line.scan(/^[|*\s\e\[m\d]+(\w+)/).flatten.first
+        color_less = line.gsub(/\e\[[^m]+m/, '')
+        commit = color_less.scan(/^[\| \*]+ ([a-z0-9]+)/).flatten.first
         lines << { :line => line, :build => builds.find(commit) }
       end
 
