@@ -69,9 +69,9 @@ class Heidi
       name == "" ? nil : name
     end
 
-    def integrate
+    def integrate(forced=false)
       return "locked" if locked?
-      return true if self.current_build == self.commit
+      return true if !forced && self.current_build == self.commit
 
       status = "unknown"
 

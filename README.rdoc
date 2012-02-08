@@ -113,6 +113,9 @@ Or by hand
 
   heidi integrate [$project]
 
+Projects that have been integrated up-to the latest commit wont be integrated
+again, unless you explicitly specify the project.
+
 == Results
 
 And off course you would like to see some results...
