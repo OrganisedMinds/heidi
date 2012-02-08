@@ -15,8 +15,10 @@ class Heidi
       end
 
       env = {
-        'HEIDI_LOG_DIR'   => build.log_root,
-        'HEIDI_BUILD_DIR' => where,
+        'HEIDI_LOG_DIR'      => build.log_root,
+        'HEIDI_BUILD_DIR'    => where,
+        'HEIDI_BUILD_COMMIT' => build.commit,
+
         'RUBYOPT'         => nil,
         'BUNDLE_BIN_PATH' => nil,
         'BUNDLE_GEMFILE'  => nil,
