@@ -20,6 +20,8 @@ class Heidi
         'RUBYOPT'         => nil,
         'BUNDLE_BIN_PATH' => nil,
         'BUNDLE_GEMFILE'  => nil,
+        'GEM_HOME'        => nil,
+        'GEM_PATH'        => nil,
       }
 
       shell = SimpleShell.new(where, env)
