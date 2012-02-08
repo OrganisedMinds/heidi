@@ -51,7 +51,7 @@ h1 a {
   color: green !important;
 }
 
-.terminal.DNF, .errored, .color33 {
+.errored, .color33 {
   color: yellow !important;
 }
 
@@ -63,7 +63,7 @@ h1 a {
   color: purple !important;
 }
 
-.color36 {
+.terminal .DNF, .color36 {
   color: aqua !important;
 }
 
@@ -102,7 +102,7 @@ h1 a {
 }
 
 .status {
-  padding-left: 2em;
+  padding-left: 3em;
 }
 
 p {

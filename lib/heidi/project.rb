@@ -50,6 +50,14 @@ class Heidi
       @git.commit[0..8]
     end
 
+    def author(commit=self.commit)
+      @git.log(1, "%cN <%cE>", commit)
+    end
+
+    def date(commit=self.commit)
+      @git.log(1, "%ci", commit)
+    end
+
     def last_commit
       @git["commit"]
     end
@@ -136,8 +144,7 @@ class Heidi
     end
 
     def log
-      shell = SimpleShell.new(@cached_root)
-      log = shell.git %W(log -n40 --color --graph --pretty=oneline --abbrev-commit)
+      log = @git.graph(120)
 
       lines = []
       log.out.lines.each do |line|

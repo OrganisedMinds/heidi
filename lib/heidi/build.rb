@@ -28,6 +28,14 @@ class Heidi
       @logs = Logs.new(@log_root)
     end
 
+    def author
+      project.author(@commit)
+    end
+
+    def date
+      project.date(@commit)
+    end
+
     def load_hooks
       log :info, "Loading hooks"
       @hooks  = {

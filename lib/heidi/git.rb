@@ -100,6 +100,24 @@ class Heidi
       @shell.system(*command)
     end
 
+    def log(amount, format=nil, commit=nil)
+      args = %W(log -n#{amount})
+
+      if !format.nil? && format !~ /\%/
+        commit = format
+        format = nil
+      end
+
+      args << "--pretty=#{format}" unless format.nil?
+      args << commit unless commit.nil?
+
+      @shell.git(args).out
+    end
+
+    def graph(amount=40)
+      @shell.git %W(log -n#{amount} --color --graph --pretty=oneline --abbrev-commit)
+    end
+
     # git config $key $value
     def []=(key, value)
       @shell.system("git", "config", "heidi.#{key}", value)
