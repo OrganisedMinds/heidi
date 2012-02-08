@@ -32,7 +32,7 @@ when "new"
 
   puts "running bundle install"
   shell.in(for_a) do |sh|
-    sh.bundle "install"
+    sh.bundle "install --binstubs --deployment"
   end
 
 when "project"
