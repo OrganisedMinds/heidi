@@ -23,8 +23,8 @@ class Heidi
         res = hook.perform(build.build_root)
 
         if res.S?.to_i != 0
-          log "--- test #{hook.name} failed ---"
-          log(res.err.empty? ? "No error message given" : res.err)
+          log "--- #{hook.name}: failed ---"
+          log(hook.message)
 
           @message = "tests failed"
           tests_failed = true

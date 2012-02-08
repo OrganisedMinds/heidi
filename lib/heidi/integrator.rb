@@ -62,7 +62,7 @@ class Heidi
       return $!
 
     ensure
-      run_hooks(:failed) if @failed == true
+      run_hooks(:failure) if @failed == true
 
       # always unlock the build root, no matter what
       build.unlock
@@ -78,8 +78,8 @@ class Heidi
         res = hook.perform
 
         if res.S?.to_i != 0
-          build.log :error, "--- #{where} hook: #{hook.name} failed ---"
-          build.log :error, res.err
+          build.log :error, "--- #{hook.name}: failed ---"
+          build.log :error, hook.message
 
           hooks_failed = true
           break

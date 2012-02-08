@@ -1,4 +1,5 @@
 require 'simple_shell'
+require 'time'
 
 class Heidi
   class Hook
@@ -14,6 +15,8 @@ class Heidi
         where = build.root
       end
 
+      start = Time.now
+      build.log :info, "Running #{self.name}"
       env = {
         'HEIDI_LOG_DIR'      => build.log_root,
         'HEIDI_BUILD_DIR'    => where,
@@ -27,12 +30,23 @@ class Heidi
       }
 
       shell = SimpleShell.new(where, env)
-      res = shell.do @script
-      return res
+      @res = shell.do @script
+
+      build.log(:info, ("#{self.name} done. Took %.2fs" % (Time.now-start)))
+
+      return @res
+    end
+
+    def message
+      @res.err.empty? ?
+        @res.out.empty? ?
+          "No error message given" :
+          @res.out :
+        @res.err
     end
 
     def name
-      File.basename(@script)
+      File.join(File.basename(File.dirname(@script)), File.basename(@script))
     end
   end
 end

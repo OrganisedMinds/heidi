@@ -20,8 +20,8 @@ class Heidi
 
           res = hook.perform(build.build_root)
           if res.S?.to_i != 0
-            log("--- Build hook #{hook.name} failed ---")
-            log(res.err.empty? ? "no error message given" : res.err)
+            log("--- #{hook.name} failed ---")
+            log(hook.message)
             build_failed = true
             break
 
