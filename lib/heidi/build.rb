@@ -177,7 +177,8 @@ class Heidi
       end
 
       def each(&block)
-        @logs.each(&block)
+        heidi = @logs.select { |l| l.file_name =~ /heidi/ }
+        (heidi + (@logs - heidi)).each(&block)
       end
 
       class Log
