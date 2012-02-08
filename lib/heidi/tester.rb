@@ -20,6 +20,7 @@ class Heidi
       end
 
       build.hooks[:tests].each do |hook|
+        log(">> #{hook.name}:")
         res = hook.perform(build.build_root)
 
         if res.S?.to_i != 0
@@ -33,6 +34,7 @@ class Heidi
         else
           log(res.out) unless res.out.empty?
         end
+        log("\n\n")
       end
 
       return tests_failed ? false : true

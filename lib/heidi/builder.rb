@@ -18,6 +18,7 @@ class Heidi
         build.hooks[:build].each do |hook|
           next if build_failed == true
 
+          log(">> #{hook.name}:")
           res = hook.perform(build.build_root)
           if res.S?.to_i != 0
             log("--- #{hook.name} failed ---")
@@ -28,6 +29,7 @@ class Heidi
           else
             log(res.out) unless res.out.empty?
           end
+          log("\n\n")
         end
 
         if build_failed == true
