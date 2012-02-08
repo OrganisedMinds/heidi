@@ -11,34 +11,7 @@ class Heidi
     end
 
     def build!
-      return false if self.setup_build_dir != true
-
-      if build.hooks[:build].any?
-        build_failed = false
-        build.hooks[:build].each do |hook|
-          next if build_failed == true
-
-          log(">> #{hook.name}:")
-          res = hook.perform(build.build_root)
-          if res.S?.to_i != 0
-            log("--- #{hook.name} failed ---")
-            log(hook.message)
-            build_failed = true
-            break
-
-          else
-            log(res.out) unless res.out.empty?
-          end
-          log("\n\n")
-        end
-
-        if build_failed == true
-          build.log :error, "Build failed, revert to build.log for details"
-          return false
-        end
-      end
-
-      return true
+      return self.setup_build_dir
     end
 
     def setup_build_dir

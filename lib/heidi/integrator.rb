@@ -43,10 +43,12 @@ class Heidi
       return failure if !run_hooks(:before)
 
       builder = Heidi::Builder.new(build)
-      tester = Heidi::Tester.new(build)
-
       return failure if !builder.build!
+      return failure if !run_hooks(:build)
+
+      tester = Heidi::Tester.new(build)
       return failure if !tester.test!
+      return failure if !run_hooks(:tests)
 
       return failure if !run_hooks(:success)
 
@@ -75,9 +77,13 @@ class Heidi
 
       hooks_failed = false
       build.hooks[where].each do |hook|
-        res = hook.perform
+        start = Time.now
+        build.log :info, "Running #{hook.name} :"
 
-        if res.S?.to_i != 0
+        hook.perform
+
+        if hook.failed?
+          build.log :info, "\tfailed. See heidi.error"
           build.log :error, "--- #{hook.name}: failed ---"
           build.log :error, hook.message
 
@@ -85,8 +91,10 @@ class Heidi
           break
 
         else
-          build.log :info, res.out
+          build.log :info, "#{hook.output.lines.collect { |l| "\t#{l}" }.join("\n")}"
         end
+
+        build.log(:info, ("Took %.2fs" % (Time.now-start)))
       end
 
       @hooks_ran << where
