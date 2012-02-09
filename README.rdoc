@@ -2,10 +2,14 @@
 
 A Continious Integration thingy. Naive, and therefor called Heidi.
 
-http://www.tv-nostalgie.de/sound/Heidi2.jpg
+http://heidi-demo.organisedminds.com/images/HeidiBlue-480.png
 
-Heidi is still taking form and is used to do CI at OrganisedMinds.com
-(http://organisedminds.com) - Why don't you sign up there? It's free!
+Heidi is still taking form and is sponsored by (and used at) OrganisedMinds.com
+(http://organisedminds.com) - A super useful
+flexible tool for collaborating in teams and projects across geographic
+locations. Why don't you sign up there? It's free!
+
+http://heidi-demo.organisedminds.com/images/OrganisedMinds.png
 
 == The basics
 

@@ -1,7 +1,29 @@
-<br />
-<img src='/images/heidi.jpeg' />
+<div class="column">
+  <h1>Projects</h1>
+  <ul class="projects">
+    <% projects.each do |project| %>
+      <li class="<%= project.build_status %>"><a href="/projects/<%= project.name %>"><%= project.name %></a> - <%= project.build_status %></li>
+    <% end %>
+  </ul>
+</div>
 
-<h1>Projects</h1>
-<ul><% projects.each do |project| %>
-  <li><a href="/projects/<%= project.name %>"><%= project.name %></a> - <%= project.build_status %></li>
-<% end %></ul>
+<div class="column" style="width: 500px;">
+  <img src='/images/HeidiBlue-480.png' />
+  <br /><br />
+
+  <p>Heidi is OpenSource. Fork, patch and improve it at <a
+    href="https://github.com/coffeeaddict/heidi">GitHub</a></p>
+
+  <p>Heidi is proudly sponsored by <a
+    href="http://organisedminds.com">organisedminds.com</a> (a super useful
+  flexible tool for collaborating in teams and projects across geographic
+  locations) Check it out!</p>
+
+  <br /><br />
+  <center>
+    <a href="http://organisedminds.com" title="Sponsored by OrganisedMinds.com">
+      <img src="/images/OrganisedMinds.png" alt="OrganisedMinds.com" />
+    </a>
+  </center>
+
+</div>
