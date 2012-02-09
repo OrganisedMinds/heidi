@@ -24,6 +24,6 @@
 <br />
 
 <h2>Build history</h2>
-<pre style="width: 75%" class="terminal"><% project.log.each do |line| %><% build = nil; if (build = line[:build]) %><a title="<%= build.author %>" href="/projects/<%= project.name %>/build/<%= build.commit %>"><%= ansi_color_codes(line[:line]).chomp %></a> <span class="status">[<span class="<%= build.status %>"><%= build.status %></span>] (<%= build.date %>, <%= build.author.gsub '<', '&lt;' %>)</span>
+<pre class="history terminal"><% project.log.each do |line| %><% build = nil; if (build = line[:build]) %><a title="<%= build.author %>" href="/projects/<%= project.name %>/build/<%= build.commit %>"><%= ansi_color_codes(line[:line]).chomp %></a> <span class="status">[<span class="<%= build.status %>"><%= build.status %></span>] (<%= build.date %>, <%= build.author.gsub '<', '&lt;' %>)</span>
 <% else %><%= ansi_color_codes line[:line] %>
 <% end %><% end %></pre>

@@ -181,3 +181,13 @@ ul {
   display: inline-block;
   min-width: 120px;
 }
+
+ul.projects {
+  font-size: 110%;
+  font-weight: bold;
+}
+
+.history {
+  width: 75%;
+  overflow: hidden;
+}
