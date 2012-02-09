@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "heidi"
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Hartog C. de Mik"]
@@ -41,6 +41,9 @@ Gem::Specification.new do |s|
     "lib/heidi/tester.rb",
     "lib/heidi/web.rb",
     "lib/heidi/web/public/css/screen.css",
+    "lib/heidi/web/public/images/HeidiBlue-480.png",
+    "lib/heidi/web/public/images/HeidiBlue.gif",
+    "lib/heidi/web/public/images/OrganisedMinds.png",
     "lib/heidi/web/public/images/heidi.jpeg",
     "lib/heidi/web/views/build.erb",
     "lib/heidi/web/views/home.erb",
