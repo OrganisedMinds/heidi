@@ -100,16 +100,6 @@ class Heidi
       }})
     end
 
-    put '/projects/:name/build' do
-      project = $heidi[params[:name]]
-      if project.nil?
-        return "no project by that name: #{params[:name]}"
-      end
-
-      project.integrate
-    end
-
-
     helpers do
       def ansi_color_codes(string)
         return "" if string.nil?
