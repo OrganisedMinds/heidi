@@ -5,6 +5,6 @@
 
 <h2><%= commit %></h2>
 
-<pre class="terminal"><%= ansi_color_codes(stat) %>
+<pre class="terminal"><%= ansi_color_codes(h(stat)) %>
 
-<%= ansi_color_codes(diff) %></pre>
+<%= ansi_color_codes(h(diff)) %></pre>

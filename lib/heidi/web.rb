@@ -124,6 +124,9 @@ class Heidi
     end
 
     helpers do
+      include Rack::Utils
+      alias_method :h, :escape_html
+
       def ansi_color_codes(string)
         return "" if string.nil?
 
