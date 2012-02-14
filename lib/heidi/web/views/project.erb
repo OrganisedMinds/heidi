@@ -24,6 +24,5 @@
 <br />
 
 <h2>Build history</h2>
-<pre class="history terminal"><% project.log.each do |line| %><% build = nil; if (build = line[:build]) %><a title="<%= build.author %>" href="/projects/<%= project.name %>/build/<%= build.commit %>"><%= ansi_color_codes(line[:line]).chomp %></a> <span class="status">[<span class="<%= build.status %>"><%= build.status %></span>] (<%= build.date %>, <%= build.author.gsub '<', '&lt;' %>)</span>
-<% else %><%= ansi_color_codes line[:line] %>
-<% end %><% end %></pre>
+<pre class="history terminal"><% project.log.each do |line| %><% build = nil %><%= ansi_color_codes line[:graph] %><a href="/projects/<%= project.name %>/commit/<%= line[:commit] %>"><%= line[:commit] %></a><% if (build = line[:build]) %><a class="build" href="/projects/<%= project.name %>/build/<%= build.commit %>"><%= ansi_color_codes(line[:message]) %></a> <span class="status">[<span class="<%= build.status %>"><%= build.status %></span>] (<%= build.date %>, <%= build.author.gsub '<', '&lt;' %>)</span><% else %><%= ansi_color_codes line[:message] %><% end %>
+<% end %></pre>

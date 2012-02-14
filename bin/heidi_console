@@ -1,3 +1,0 @@
-#!/bin/sh
-
-irb -I $HEIDI_LOAD_PATH -r heidi

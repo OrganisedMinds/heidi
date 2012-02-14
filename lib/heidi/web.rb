@@ -84,6 +84,22 @@ class Heidi
 
     end
 
+    get '/projects/:name/commit/:commit' do
+      project = @heidi[params[:name]]
+      if project.nil?
+        return "no project by that name: #{params[:name]}"
+      end
+
+      commit = params[:commit]
+
+      erb(:commit, { :locals => {
+        :commit  => commit,
+        :project => project,
+        :stat    => project.stat(commit),
+        :diff    => project.diff(commit),
+      }})
+    end
+
     put '/projects/:name/build' do
       project = $heidi[params[:name]]
       if project.nil?
@@ -96,6 +112,8 @@ class Heidi
 
     helpers do
       def ansi_color_codes(string)
+        return "" if string.nil?
+
         string.gsub(/\e\[0?m/, '</span>').
           gsub /\e\[[^m]+m/ do |codes|
             colors = codes.gsub(/[\e\[m]+/, '')

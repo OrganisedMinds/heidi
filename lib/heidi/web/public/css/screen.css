@@ -148,6 +148,9 @@ pre.terminal {
 .terminal a {
   color: inherit;
   text-decoration: none;
+}
+
+.terminal a.build {
   font-weight: bold;
   border-bottom: dashed #ccc 1px;
   margin: 4px 0;

@@ -118,6 +118,14 @@ class Heidi
       @shell.git %W(log -n#{amount} --color --graph --pretty=oneline --abbrev-commit)
     end
 
+    def stat(commit)
+      @shell.git(%W(log -n1 --color --stat #{commit})).out
+    end
+
+    def diff(commit)
+      @shell.git(%W(diff --color #{commit}^ #{commit})).out
+    end
+
     # git config $key $value
     def []=(key, value)
       @shell.system("git", "config", "heidi.#{key}", value)
