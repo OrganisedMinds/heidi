@@ -100,6 +100,15 @@ class Heidi
       }})
     end
 
+    get '/projects/:name/configure' do
+      project = @heidi[params[:name]]
+      if project.nil?
+        return "no project by that name: #{params[:name]}"
+      end
+
+      erb(:config, { :locals => { :project => project } } )
+    end
+
     helpers do
       def ansi_color_codes(string)
         return "" if string.nil?

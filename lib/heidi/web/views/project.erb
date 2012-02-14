@@ -9,17 +9,22 @@
   latest  = builds.select { |b| b.commit == project.latest_build }.first
 %>
 
-<h2>Overview</h2>
-<strong class="label">Current</strong> :
-<% unless current.nil? %>
-  <a class="<%= current.status %>" href="/projects/<%= project.basename %>/build/<%= current.commit %>"><%= current.commit %></a>
-<% end %>
-<br />
-<strong class="label">Latest successful</strong> :
-<% unless latest.nil? %>
-  <a class="<%= latest.status %>" href="/projects/<%= project.basename %>/build/<%= latest.commit %>"><%= latest == current ? "current" : latest.commit %></a>
-<% end %>
-<br />
+<div class="column">
+  <h2>Overview</h2>
+  <strong class="label">Current</strong> :
+  <% unless current.nil? %>
+    <a class="<%= current.status %>" href="/projects/<%= project.basename %>/build/<%= current.commit %>"><%= current.commit %></a>
+  <% end %>
+  <br />
+  <strong class="label">Latest successful</strong> :
+  <% unless latest.nil? %>
+    <a class="<%= latest.status %>" href="/projects/<%= project.basename %>/build/<%= latest.commit %>"><%= latest == current ? "current" : latest.commit %></a>
+  <% end %>
+</div>
+<div class="column">
+  <a href="/projects/<%= project.basename %>/configure">Configure <%= project.name %></a>
+</div>
+<br class="clear"/>
 <br />
 <br />
 

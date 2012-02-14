@@ -1,0 +1,7 @@
+<h1>Configure <%= project.name %></h1>
+
+<form method="POST" action="/projects/<%= project.basename %>">
+  <label for="name">Name</label>
+  <input type="text" name="name" value="<%= project.name %>" />
+  <br />
+</form>
