@@ -24,6 +24,6 @@
 <% build.logs.each do |log| %>
   <h3 class="log"><%= log.file_name %></h3>
   <a name="<%= log.file_name %>" href="#top" class="top">top</a>
-  <pre class="terminal"><%= ansi_color_codes(log.contents) %></pre>
+  <pre class="terminal"><%= ansi_color_codes(h(log.contents)) %></pre>
 <% end %>
 <br /><br />
