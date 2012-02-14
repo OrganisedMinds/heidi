@@ -100,15 +100,28 @@ class Heidi
       }})
     end
 
-    put '/projects/:name/build' do
-      project = $heidi[params[:name]]
+    get '/projects/:name/configure' do
+      project = @heidi[params[:name]]
       if project.nil?
         return "no project by that name: #{params[:name]}"
       end
 
-      project.integrate
+      erb(:config, { :locals => { :project => project } } )
     end
 
+    post '/projects/:project_name' do
+      # update project
+      project = @heidi[params[:project_name]]
+      if project.nil?
+        return "no project by that name: #{params[:project_name]}"
+      end
+
+      project.name = params[:name]
+      project.integration_branch = params[:branch]
+
+
+      redirect "/projects/#{project.basename}", 302
+    end
 
     helpers do
       def ansi_color_codes(string)

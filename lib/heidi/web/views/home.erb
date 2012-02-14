@@ -2,7 +2,10 @@
   <h1>Projects</h1>
   <ul class="projects">
     <% projects.each do |project| %>
-      <li class="<%= project.build_status %>"><a href="/projects/<%= project.name %>"><%= project.name %></a> - <%= project.build_status %></li>
+      <li class="<%= project.build_status %>">
+        <a href="/projects/<%= project.basename %>"><%= project.name %></a>
+        - <%= project.build_status %>
+      </li>
     <% end %>
   </ul>
 </div>

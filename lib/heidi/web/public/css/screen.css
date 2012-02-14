@@ -194,3 +194,9 @@ ul.projects {
   width: 75%;
   overflow: hidden;
 }
+
+label {
+  display: inline-block;
+  min-width: 120px;
+  font-weight: bold;
+}

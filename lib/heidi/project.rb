@@ -46,6 +46,10 @@ class Heidi
       @name ||= @git[:name]
     end
 
+    def basename
+      File.basename(@root)
+    end
+
     def commit
       @git.commit[0..8]
     end
@@ -89,6 +93,14 @@ class Heidi
     def integration_branch
       name = @git["build.branch"]
       name == "" ? nil : name
+    end
+    def integration_branch=(name)
+      name = name.split('/').last if name =~ /\//
+      @git["build.branch"] = name
+    end
+
+    def integration_branches
+      @git.remote_branches
     end
 
     def integrate(forced=false)
