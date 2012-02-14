@@ -94,6 +94,14 @@ class Heidi
       name = @git["build.branch"]
       name == "" ? nil : name
     end
+    def integration_branch=(name)
+      name = name.split('/').last if name =~ /\//
+      @git["build.branch"] = name
+    end
+
+    def integration_branches
+      @git.remote_branches
+    end
 
     def integrate(forced=false)
       return true if !forced && self.current_build == self.commit

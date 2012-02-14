@@ -37,6 +37,12 @@ class Heidi
       res.out.split("\n").collect{ |b| b.gsub(/^[\s*]+/, '') }
     end
 
+    def remote_branches
+      res = @shell.git(%W(branch --no-color -r))
+      branches = res.out.split("\n").collect{ |b| b.gsub(/^[\s*]+/, '') }
+      branches.select { |b| b !~ /HEAD/ }
+    end
+
     # git checkout $name
     def switch(name)
       return nil unless branches.include?(name)
