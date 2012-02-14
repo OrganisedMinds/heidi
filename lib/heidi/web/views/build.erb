@@ -4,7 +4,7 @@
 <br /><br />
 
 <h2 class="<%= build.status %>"><%= build.commit %></h2>
-
+<div class="column">
 <% if build.status == "passed" %>
  <a href='/projects/<%= project.name %>/build/<%= build.commit %>/tar_ball'>download</a>
 <br /><br />
@@ -13,6 +13,10 @@
 | <% build.logs.each do |log| %>
  <a href="#<%= log.file_name %>"><%= log.file_name %></a> |
 <% end %>
+</div>
+<div class="column">
+  <a href="/projects/<%= project.name %>/commit/<%= build.commit %>">Want to see the commit?</a>
+</div>
 <br class="clear" />
 <br />
 <br />
