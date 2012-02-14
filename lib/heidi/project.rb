@@ -150,7 +150,14 @@ class Heidi
       log.out.lines.each do |line|
         color_less = line.gsub(/\e\[[^m]+m/, '')
         commit = color_less.scan(/^[\| \*]+ ([a-z0-9]+)/).flatten.first
-        lines << { :line => line, :build => builds.find(commit) }
+        (graph, message) = line.chomp.split(commit)
+        lines << {
+          :line    => line,
+          :commit  => commit,
+          :build   => builds.find(commit),
+          :graph   => graph,
+          :message => message,
+        }
       end
 
       return lines
