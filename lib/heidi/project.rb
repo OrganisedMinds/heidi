@@ -46,6 +46,10 @@ class Heidi
       @name ||= @git[:name]
     end
 
+    def basename
+      File.basename(@root)
+    end
+
     def commit
       @git.commit[0..8]
     end
