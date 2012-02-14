@@ -156,6 +156,14 @@ class Heidi
       return lines
     end
 
+    def stat(commit)
+      @git.stat(commit)
+    end
+
+    def diff(commit)
+      @git.diff(commit)
+    end
+
     def unlock
       File.unlink lock_file
     end
