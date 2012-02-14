@@ -7,6 +7,10 @@ cmd   = ARGV.shift
 for_a = ARGV.shift
 
 ENV['PATH'] = "/bin:/usr/bin:/usr/local/bin"
+if ENV['HEIDI_PATH']
+  ENV['PATH'] += ":#{ENV['HEIDI_PATH']}"
+  ENV['HEIDI_PATH'] = nil
+end
 
 shell = SimpleShell.new
 
@@ -19,10 +23,9 @@ end
 
 case cmd
 when "new"
-  puts "creating #{for_a}"
+  puts "creating #{for_a}/"
   puts "creating #{for_a}/projects"
   shell.mkdir %W(-p #{for_a}/projects)
-  puts "creating #{for_a}/bin"
   shell.mkdir %W(-p #{for_a}/bin)
   puts "creating #{for_a}/Gemfile"
   File.open("#{for_a}/Gemfile", File::CREAT|File::WRONLY) do |f|
@@ -30,13 +33,26 @@ when "new"
     f.puts 'gem "heidi"'
   end
 
-  puts "running bundle install"
-  shell.in(for_a) do |sh|
-    sh.bundle "install --binstubs --deployment"
-  end
+  puts "\nIf you like you can run: bundle install --binstubs"
+  puts "this will tie heidi and heidi_web to this location"
+  puts "\nFor even more tying down, run: bundle install --deployment"
+  puts "after running bundle install --binstubs"
+
 
 when "project"
+  repo = ARGV.shift
+
+  if repo.nil?
+    $stderr.puts "You must specify a repository"
+    exit 1
+  end
+
   check_heidi_root
+
+  if File.exists? "projects/#{for_a}"
+    $stderr.puts "projects/#{for_a} is in the way. Please remove it"
+    exit 1
+  end
 
   # create a logs dir
   puts "creating projects/#{for_a}"
@@ -51,7 +67,7 @@ when "project"
   # make a clone
   shell.in("projects/#{for_a}") do |sh|
     puts "filling #{for_a} cache"
-    repo = ARGV.shift
+
     puts "git clone #{repo}"
     sh.git %W(clone #{repo} cached)
 
@@ -60,7 +76,7 @@ when "project"
       cached.git %W(config heidi.name #{for_a})
     end
   end
-  puts "Creating default test hook: projects/#{for_a}/hooks/test/01_rspec"
+  puts "Creating default test hook: projects/#{for_a}/hooks/tests/01_rspec"
   File.open("projects/#{for_a}/hooks/tests/01_rspec", File::CREAT|File::WRONLY) do |f|
     f.puts %q(#!/bin/sh
 
@@ -68,7 +84,7 @@ when "project"
 bundle exec rake spec
 )
   end
-  shell.chmod %W(+x projects/#{for_a}/hooks/test/01_rspec)
+  shell.chmod %W(+x projects/#{for_a}/hooks/tests/01_rspec)
   puts "\n"
   puts "Now edit or add some hooks and run: heidi integrate #{for_a}"
 
