@@ -84,6 +84,22 @@ class Heidi
 
     end
 
+    get '/projects/:name/commit/:commit' do
+      project = @heidi[params[:name]]
+      if project.nil?
+        return "no project by that name: #{params[:name]}"
+      end
+
+      commit = params[:commit]
+
+      erb(:commit, { :locals => {
+        :commit  => commit,
+        :project => project,
+        :stat    => project.stat(commit),
+        :diff    => project.diff(commit),
+      }})
+    end
+
     put '/projects/:name/build' do
       project = $heidi[params[:name]]
       if project.nil?

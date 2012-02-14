@@ -1,0 +1,10 @@
+<h1><%= project.name %></h1>
+
+<a href="/projects/<%= project.name %>"><< back</a>
+<br /><br />
+
+<h2><%= commit %></h2>
+
+<pre class="terminal"><%= ansi_color_codes(stat) %>
+
+<%= ansi_color_codes(diff) %></pre>
