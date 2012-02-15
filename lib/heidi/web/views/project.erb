@@ -33,5 +33,5 @@
 <br />
 
 <h2>Build history</h2>
-<pre class="history terminal"><% project.log.each do |line| %><% build = nil %><%= ansi_color_codes line[:graph] %><a href="/projects/<%= project.basename %>/commit/<%= line[:commit] %>"><%= line[:commit] %></a><% if (build = line[:build]) %><a class="build" href="/projects/<%= project.basename %>/build/<%= build.commit %>"><%= ansi_color_codes(line[:message]) %></a> <span class="status">[<span class="<%= build.status %>"><%= build.status %></span>] (<%= build.date %>, <%= build.author.gsub '<', '&lt;' %>)</span><% else %><%= ansi_color_codes line[:message] %><% end %>
+<pre class="history terminal"><% project.log.each do |line| %><% build = nil %><%= ansi_color_codes line[:graph] %><% unless line[:commit].nil? %><a href="/projects/<%= project.basename %>/commit/<%= line[:commit] %>"><%= line[:commit] %></a><% if (build = line[:build]) %><a class="build" href="/projects/<%= project.basename %>/build/<%= build.commit %>"><%= ansi_color_codes(line[:message]) %></a> <span class="status">[<span class="<%= build.status %>"><%= build.status %></span>] (<%= build.date %>, <%= build.author.gsub '<', '&lt;' %>)</span><% else %><%= ansi_color_codes line[:message] %><% end %><% end %>
 <% end %></pre>
