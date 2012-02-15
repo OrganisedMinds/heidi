@@ -160,9 +160,18 @@ class Heidi
 
       lines = []
       log.out.lines.each do |line|
-        color_less = line.gsub(/\e\[[^m]*m?/, '')
-        commit = color_less.scan(/^[^a-z0-9]+([a-z0-9]+)/).flatten.first
-        (graph, message) = line.chomp.split(commit)
+        commit  = nil
+        message = nil
+        graph   = nil
+
+        if line =~ /\*/
+          color_less = line.gsub(/\e\[[^m]*m?/, '')
+          commit = color_less.scan(/^[^a-z0-9]+([a-z0-9]+)/).flatten.first
+          (graph, message) = line.chomp.split(commit)
+        else
+          graph = line.chomp
+        end
+
         lines << {
           :line    => line,
           :commit  => commit,
