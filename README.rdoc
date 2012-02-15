@@ -64,6 +64,11 @@ And these are being set (and used) by Heidi. Please dont edit (unless...)
     status = failed
     current = acc53b9c5
 
+
+Heidi Web also provides a way to configure the projects. There is however
+no way do Access Control (yet). (But then again, exposing this stuff is
+something to concider trice)
+
 == Hooks
 
 There is a hooks directory inside your projects directory, and it has the
@@ -128,6 +133,22 @@ And off course you would like to see some results...
   % heidi_web
 
 Just make sure to set your firewall straight
+
+
+== Heidi Web
+
+Heidi web will show you
+
+* Projects with their:
+  * Commits, with stat and diff
+  * Builds with their
+    * Logs and
+    * Tar balls
+  * Configuration
+
+For now host and port settings are very weak, and deamonizing is not done.
+
+It also fails on all cases of ACL...
 
 == Contributing to heidi
 
