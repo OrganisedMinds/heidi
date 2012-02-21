@@ -90,11 +90,11 @@ class Heidi
       @git["build.status"] = status
     end
 
-    def integration_branch
+    def branch
       name = @git["build.branch"]
       name == "" ? nil : name
     end
-    def integration_branch=(name)
+    def branch=(name)
       name.gsub!("origin/", "")
       @git["build.branch"] = name
     end

@@ -28,10 +28,10 @@ class Heidi
         return false
       end
 
-      if project.integration_branch
+      if project.branch
         @git = Heidi::Git.new(build.build_root)
 
-        branch = project.integration_branch
+        branch = project.branch
         build.log(:info, "Switching to integration branch: #{branch}")
         res = @git.switch(branch)
         if res.nil?

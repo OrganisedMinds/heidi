@@ -117,7 +117,7 @@ class Heidi
       end
 
       project.name = params[:name]
-      project.integration_branch = params[:branch]
+      project.branch = params[:branch]
 
 
       redirect "/projects/#{project.basename}", 302

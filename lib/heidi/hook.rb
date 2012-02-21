@@ -20,6 +20,7 @@ class Heidi
         'HEIDI_LOG_DIR'      => build.log_root,
         'HEIDI_BUILD_DIR'    => where,
         'HEIDI_BUILD_COMMIT' => build.commit,
+        'HEIDI_BRANCH'       => build.project.branch
 
         'RUBYOPT'         => nil,
         'BUNDLE_BIN_PATH' => nil,
