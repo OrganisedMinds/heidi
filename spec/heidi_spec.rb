@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe Heidi do
   before(:all) do
-    shell = SimpleShell.new("/")
-    shell.mkdir("-p", "/tmp/heidi_spec/projects/one")
+    fake_me_a_heidi
   end
 
   it "should gather projects on load" do
