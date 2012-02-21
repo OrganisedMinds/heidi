@@ -6,8 +6,16 @@ describe Heidi do
   end
 
   it "should gather projects on load" do
-    h = Heidi.new("/tmp/heidi_spec")
-    h.projects.should be_kind_of(Array)
-    h.projects.count.should == 1
+    @heidi.projects.should be_kind_of(Array)
+    @heidi.projects.count.should == 1
+  end
+
+  it "should return projects" do
+    @heidi.projects.first.should be_kind_of(Heidi::Project)
+  end
+
+  it "should respond to [] syntax" do
+    @heidi[:heidi_test].should be_kind_of(Heidi::Project)
+    @heidi["heidi_test"].should == @heidi.projects.first
   end
 end
