@@ -29,6 +29,8 @@ class Heidi
 
       @shell.mkdir %W(-p #{@log_root}) unless File.exists?(@log_root)
       @logs = Logs.new(@log_root)
+
+      @i_locked_build = false
     end
 
     def author
@@ -106,8 +108,10 @@ class Heidi
     def lock(&block)
       log(:info, "Locking build")
       File.open(lock_file, File::CREAT|File::TRUNC|File::WRONLY) do |f|
+        @i_locked_build = true
         f.puts Time.now.ctime
       end
+
 
       if block_given?
         yield
@@ -119,10 +123,15 @@ class Heidi
       return unless locked?
       log(:info, "Unlocking build")
       File.unlink lock_file
+      @i_locked_build = false
     end
 
     def locked?
       File.exists? lock_file
+    end
+
+    def locked_build?
+      @i_locked_build == true ? true : false
     end
 
     def record(what)

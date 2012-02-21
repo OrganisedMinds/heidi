@@ -15,6 +15,11 @@ class Heidi
     end
 
     def setup_build_dir
+      if build.locked? and !build.locked_build?
+        build.log(:error, "The build was locked externaly")
+        return false
+      end
+
       if File.exists? build.build_root
         build.log(:info, "Removing previous build")
         build.shell.do "rm", "-r", build.build_root
