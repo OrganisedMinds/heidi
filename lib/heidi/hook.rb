@@ -16,6 +16,7 @@ class Heidi
 
       start = Time.now
       env = {
+        'HEIDI_DIR'          => build.project.root,
         'HEIDI_LOG_DIR'      => build.log_root,
         'HEIDI_BUILD_DIR'    => where,
         'HEIDI_BUILD_COMMIT' => build.commit,
