@@ -38,12 +38,13 @@ class Heidi
     end
 
     def name=(name)
-      @name = name
       @git["name"] = name
     end
 
     def name
-      @name ||= @git[:name]
+      name ||= @git[:name] || basename
+      name = basename if name.empty?
+      name
     end
 
     def basename
@@ -51,8 +52,9 @@ class Heidi
     end
 
     def commit
-      @git.commit[0..8]
+      @git.commit[0..7]
     end
+    alias_method :HEAD, :commit
 
     def author(commit=self.commit)
       @git.log(1, "%cN <%cE>", commit)
