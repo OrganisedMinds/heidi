@@ -90,6 +90,24 @@ these scripts will be executed inside the build directory at a given time.
            emails here
 [failure]  Is run when the tests failed. Send he-or-she-broke-it emails here.
 
+=== Environment
+
+Each hook is called with a Pretty-Clean-Environment. At the very least it is
+made sure that you are not hindered by GemBundler.
+
+How Heidi hooks hold up with RVM; I'm just not sure...
+
+There is a number of Heidi variables passed into the hook as well
+
+[$HEIDI_DIR]           The project directory
+[$HEIDI_LOG_DIR]       The build's log directory (so you can write your own)
+[$HEIDI_BUILD_DIR]     The build root
+[$HEIDI_BUILD_COMMIT]  The abbrev. of the commit currently working on.
+
+==== Caveat
+
+These environment variable might be subject to change in the (near) future
+
 == History
 
 Heidi keeps history; projects/$projects/logs/* is where all the integration
