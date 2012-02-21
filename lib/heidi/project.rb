@@ -34,7 +34,7 @@ class Heidi
         end.first
       end
 
-      return @builds
+      return @builds.sort_by(&:time)
     end
 
     def name=(name)

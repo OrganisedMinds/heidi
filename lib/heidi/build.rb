@@ -41,6 +41,10 @@ class Heidi
       project.date(@commit)
     end
 
+    def time
+      Time.parse(date)
+    end
+
     def load_hooks
       log :info, "Loading hooks"
       @hooks  = {
