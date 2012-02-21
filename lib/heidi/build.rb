@@ -8,6 +8,9 @@ class Heidi
   # A build is tied to a commit
   #
   class Build
+    FAILURE = "FAILURE"
+    SUCCESS = "SUCCESS"
+
     attr_reader :project, :commit, :root, :log_root, :build_root, :shell,
       :hooks, :logs
 
@@ -127,12 +130,12 @@ class Heidi
       file = nil
       case what
       when :failure
-        project.build_status = "failed"
-        file = File.open(File.join(@root, "FAILURE"), flags)
+        project.build_status = Heidi::FAILED
+        file = File.open(File.join(@root, FAILURE), flags)
       when :success
-        project.build_status = "passed"
+        project.build_status = Heidi::PASSED
         project.record_latest_build
-        file = File.open(File.join(@root, "SUCCESS"), flags)
+        file = File.open(File.join(@root, SUCCESS), flags)
       end
 
       unless file.nil?
@@ -142,19 +145,19 @@ class Heidi
     end
 
     def failed?
-      File.exists?(File.join(@root, "FAILURE"))
+      File.exists?(File.join(@root, FAILURE))
     end
 
     def success?
-      File.exists?(File.join(@root, "SUCCESS"))
+      File.exists?(File.join(@root, SUCCESS))
     end
 
     def status
       self.failed? ?
-        "failed" :
+        Heidi::FAILED :
         self.success? ?
-          "passed" :
-          "DNF"
+          Heidi::PASSED :
+          Heidi::DNF
     end
 
     # file handle to tar ball

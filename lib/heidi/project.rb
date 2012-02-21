@@ -107,7 +107,7 @@ class Heidi
       return true if !forced && self.current_build == self.commit
       return "locked" if locked?
 
-      status = "unknown"
+      status = Heidi::DNF
 
       self.lock do
         record_current_build
@@ -117,7 +117,7 @@ class Heidi
         elsif res.is_a? String
           status = res
         else
-          status = "failed"
+          status = Heidi::FAILED
         end
       end
 
