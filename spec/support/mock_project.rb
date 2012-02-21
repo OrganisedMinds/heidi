@@ -20,11 +20,12 @@ module MockProject
 
     spec = File.join(@fake, "projects/heidi_test/hooks/tests", "01_rspec")
     File.open(spec, File::CREAT|File::WRONLY) do |f|
-      f.puts %q(#!/bin/sh
+      f.puts %Q(#!/bin/sh
 
-bundle exec rake spec)
+touch #{@fake}/#{File.basename(@fake)})
     end
 
+    shell.chmod %W(+x #{spec})
 
     @heidi = Heidi.new(@fake)
   rescue Exception => ex
