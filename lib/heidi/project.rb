@@ -95,7 +95,7 @@ class Heidi
       name == "" ? nil : name
     end
     def integration_branch=(name)
-      name = name.split('/').last if name =~ /\//
+      name.gsub!("origin/", "")
       @git["build.branch"] = name
     end
 

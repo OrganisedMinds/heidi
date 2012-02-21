@@ -1,5 +1,8 @@
 <h1>Configure <%= project.name %></h1>
 
+<a href="/projects/<%= project.basename %>"><< back</a>
+<br /><br />
+
 <form method="POST" action="/projects/<%= project.basename %>">
   <label for="name">Name</label>
   <input type="text" name="name" value="<%= project.name %>" />
@@ -10,7 +13,7 @@
   <select name="branch">
     <option value="">...</option>
     <% project.integration_branches.each do |branch| %>
-      <% branch_name = branch.split("/").last %>
+      <% branch_name = branch.gsub("origin/", "") %>
       <option value="<%= branch_name %>" <%= "selected" if branch_name == project.integration_branch %>><%= branch %></option>
     <% end %>
   </select>
