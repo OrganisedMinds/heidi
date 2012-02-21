@@ -186,6 +186,8 @@ class Heidi
         @log_root = log_root
         @logs = []
 
+        FileUtils.mkdir_p log_root if !File.directory?(log_root)
+
         Dir[File.join(@log_root, "*")].each do |file|
           @logs << Log.new(file)
         end
@@ -221,6 +223,14 @@ class Heidi
               f.puts msg
             end
           end
+
+          read
+        end
+
+        def read
+          @contents = File.read(@file)
+        rescue
+          @contents = ""
         end
 
         def raw(msg)
