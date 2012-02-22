@@ -4,17 +4,16 @@ require 'heidi/shell'
 require 'tmpdir'
 require 'fileutils'
 
-class TestClass
-end
-
 describe Heidi::Shell do
   before(:all) do
+    @here  = Dir.pwd
     @dir   = Dir.mktmpdir(nil, "/tmp")
     FileUtils.chdir(@dir)
   end
 
   after(:all) do
     FileUtils.remove_entry_secure @dir
+    FileUtils.chdir(@here)
   end
 
   before(:each) do

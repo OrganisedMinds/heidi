@@ -127,13 +127,13 @@ class Heidi
     end
 
     def fetch
-      if integration_branch && @git.branch != integration_branch
-        if @git.branches.include? integration_branch
-          @git.switch(integration_branch)
-          @git.merge "origin/#{integration_branch}"
+      if branch && @git.branch != branch
+        if @git.branches.include? branch
+          @git.switch(branch)
+          @git.merge "origin/#{branch}"
 
         else
-          @git.checkout(integration_branch, "origin/#{integration_branch}")
+          @git.checkout(branch, "origin/#{branch}")
 
         end
       end

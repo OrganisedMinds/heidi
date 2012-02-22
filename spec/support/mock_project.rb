@@ -3,7 +3,7 @@ require 'tmpdir'
 
 module MockProject
   def fake_me_a_heidi
-    this_repo = Dir.pwd
+    this_repo = Dir.pwd rescue ENV['PWD']
 
     # create a heidi dir with the bare minimum
     @fake = Dir.mktmpdir(nil, '/tmp')

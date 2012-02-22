@@ -132,17 +132,17 @@ describe Heidi::Project do
     end
 
     it "should have no default integration branch" do
-      @project.integration_branch.should be_nil
+      @project.branch.should be_nil
     end
 
     it "should allow for the setting of a branch" do
-      @project.integration_branch = "foo"
-      @project.integration_branch.should == "foo"
+      @project.branch = "foo"
+      @project.branch.should == "foo"
     end
 
     it "should strip origin from the branch name" do
-      @project.integration_branch = "origin/master"
-      @project.integration_branch.should == "master"
+      @project.branch = "origin/master"
+      @project.branch.should == "master"
     end
 
     it "should set cached to the integration branch" do
@@ -150,10 +150,10 @@ describe Heidi::Project do
       git.checkout("something_else", "develop")
       git.branch.should_not == "develop"
 
-      @project.integration_branch = "origin/develop"
+      @project.branch = "origin/develop"
       @project.fetch
 
-      git.branch.should == @project.integration_branch
+      git.branch.should == @project.branch
     end
   end
 
