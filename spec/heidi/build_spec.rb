@@ -136,8 +136,4 @@ describe Heidi::Build do
 
     it "should provide a tar-ball"
   end
-
-  it "has not enough tests" do
-    pending "more tests please!"
-  end
 end
