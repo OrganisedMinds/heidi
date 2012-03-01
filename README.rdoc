@@ -79,6 +79,7 @@ following directories:
   - test/
   - success/
   - failure/
+  - after/
 
 If you place shell scripts in these directories and make them executable,
 these scripts will be executed inside the build directory at a given time.
@@ -89,6 +90,7 @@ these scripts will be executed inside the build directory at a given time.
 [success]  Is run when the tests where performed in good order. Send huray
            emails here
 [failure]  Is run when the tests failed. Send he-or-she-broke-it emails here.
+[after]    Runs after success or failure.
 
 === Environment
 

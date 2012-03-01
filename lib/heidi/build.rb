@@ -86,7 +86,7 @@ class Heidi
         shell.mv %W(#{@log_root} #{@log_root}.0)
       end
 
-      %w(build/ SUCCESS FAILURE).each do |inode|
+      %W(build/ #{SUCCESS} #{FAILURE}).each do |inode|
         shell.rm("-r", "-f", inode) if File.exists? File.join(@root, inode)
       end
 
