@@ -19,6 +19,8 @@ module MockProject
     end
 
     spec = File.join(@fake, "projects/heidi_test/hooks/tests", "01_rspec")
+
+    # this test hook touches a file so we can test if it did touch a file :-)
     File.open(spec, File::CREAT|File::WRONLY) do |f|
       f.puts %Q(#!/bin/sh
 
