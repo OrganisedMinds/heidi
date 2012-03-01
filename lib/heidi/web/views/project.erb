@@ -1,37 +1,87 @@
-<h1><%= project.name %></h1>
+<section id="header">
+  <div class="row">
+    <div class="span10">
+      <h1><%= project.name %></h1>
+    </div>
+    <div class="span2">
+      <ul class="nav nav-pills">
+        <li class="active">
+          <a href="/projects/">&laquo; back</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-<a href="/"><< back</a><br /><br />
-<h2 class="<%= project.build_status %>"><%= project.build_status %></h2>
+<section id="details">
+  <div class="row">
+    <div class="alert <%= status2alert(project.build_status) %> span11">
+      Build status: <strong><%= project.build_status %></strong>
+    </div>
+  </div>
 
-<%
-  builds = project.builds
-  current = builds.select { |b| b.commit == project.current_build }.first
-  latest  = builds.select { |b| b.commit == project.latest_build }.first
-%>
+  <%
+    builds = project.builds
+    current = builds.select { |b| b.commit == project.current_build }.first
+    latest  = builds.select { |b| b.commit == project.latest_build }.first
+  %>
 
-<div class="column">
-  <h2>Overview</h2>
-  <strong class="label">Current</strong> :
-  <% unless current.nil? %>
-    <a class="<%= current.status %>" href="/projects/<%= project.basename %>/build/<%= current.commit %>"><%= current.commit %></a>
-  <% end %>
   <br />
-  <strong class="label">Latest successful</strong> :
-  <% unless latest.nil? %>
-    <a class="<%= latest.status %>" href="/projects/<%= project.basename %>/build/<%= latest.commit %>"><%= latest == current ? "current" : latest.commit %></a>
-  <% end %>
-  <br />
-  <strong class="label">Integration branch</strong> :
-  <%= project.branch %>
-  <br />
-</div>
-<div class="column">
-  <a href="/projects/<%= project.basename %>/configure">Configure <%= project.name %></a>
-</div>
-<br class="clear"/>
-<br />
-<br />
+  <div class="row">
+    <div class="span10">
+      <h2>Overview</h2>
+      <% if project.locked? %>
+        <span class="label label-warning">Locked</span>
+        <br /><br />
+      <% end %>
+      <div class="row" style="padding-bottom: 5px">
+        <div class="span2"><strong>Current</strong></div>
+        <div class="span2">
+          <% unless current.nil? %>
+            <a href="/projects/<%= project.basename %>/build/<%= current.commit %>">
+              <span class="label <%= status2label(current.status) %>">
+                <%= current.commit %>
+              </span>
+            </a>
+          <% end %>
+        </div>
+      </div>
 
-<h2>Build history</h2>
-<pre class="history terminal"><% project.log.each do |line| %><% build = nil %><%= ansi_color_codes line[:graph] %><% unless line[:commit].nil? %><a href="/projects/<%= project.basename %>/commit/<%= line[:commit] %>"><%= line[:commit] %></a><% if (build = line[:build]) %><a class="build" href="/projects/<%= project.basename %>/build/<%= build.commit %>"><%= ansi_color_codes(line[:message]) %></a> <span class="status">[<span class="<%= build.status %>"><%= build.status %></span>] (<%= build.date %>, <%= build.author.gsub '<', '&lt;' %>)</span><% else %><%= ansi_color_codes line[:message] %><% end %><% end %>
+
+      <div class="row" style="padding-bottom: 5px">
+        <div class="span2"><strong>Last successful</strong></div>
+        <div class="span2">
+          <% unless latest.nil? %>
+            <a href="/projects/<%= project.basename %>/build/<%= latest.commit %>">
+              <span class="label <%= status2label(latest.status) %>">
+                <%= latest == current ? "Current" : latest.commit %>
+              </span>
+            </a>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span2"><strong>Integration branch</strong></div>
+        <div class="span2">
+          <span class="label label-info"><%= project.branch %></span>
+        </div>
+      </div>
+
+    </div>
+    <div class="span2">
+      <a href="/projects/<%= project.basename %>/configure">Configure <%= project.name %></a>
+    </div>
+  </div>
+</section>
+
+<section id="history">
+  <br />
+  <div class="row">
+    <div class="span12">
+      <h2>Build history</h2>
+      <pre class="terminal"><% project.log.each do |line| %><% build = nil %><%= ansi_color_codes line[:graph] %><% unless line[:commit].nil? %><a href="/projects/<%= project.basename %>/commit/<%= line[:commit] %>"><%= line[:commit] %></a><% if (build = line[:build]) %><a class="build" href="/projects/<%= project.basename %>/build/<%= build.commit %>"><%= ansi_color_codes(line[:message]) %></a> <span class="status">[<span class="<%= build.status %>"><%= build.status %></span>] (<%= build.date %>, <%= build.author.gsub '<', '&lt;' %>)</span><% else %><%= ansi_color_codes line[:message] %><% end %><% end %>
 <% end %></pre>
+    </div>
+  </div>
+</section>

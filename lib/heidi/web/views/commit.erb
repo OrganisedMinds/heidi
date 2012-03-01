@@ -1,10 +1,26 @@
-<h1><%= project.name %></h1>
+<section id="header">
+  <div class="row">
+    <div class="span10">
+      <h1><%= project.name %></h1>
+    </div>
+    <div class="span2">
+      <ul class="nav nav-pills">
+        <li class="active">
+          <a href="/projects/<%= project.basename %>">&laquo; back</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-<a href="/projects/<%= project.basename %>"><< back</a>
-<br /><br />
+<section id="commit">
+  <div class="row">
+    <div class="span12">
+      <h2><%= commit %></h2>
 
-<h2><%= commit %></h2>
-
-<pre class="terminal"><%= ansi_color_codes(h(stat)) %>
+      <pre class="terminal"><%= ansi_color_codes(h(stat)) %>
 
 <%= ansi_color_codes(h(diff)) %></pre>
+    </div>
+  </div>
+</section>

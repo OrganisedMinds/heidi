@@ -1,32 +1,44 @@
-<div class="column">
-  <h1>Projects</h1>
-  <ul class="projects">
-    <% projects.each do |project| %>
-      <li class="<%= project.build_status %>">
-        <a href="/projects/<%= project.basename %>"><%= project.name %></a>
-        - <%= project.build_status %>
-      </li>
-    <% end %>
-  </ul>
+<div class="hero-unit">
+  <h1>Welcome to Heidi!</h1>
+  <p>A simple, naive, yet powerful Continious Integration ... thingy...</p>
+  <p><a href="https://github.com/OrganisedMinds/heidi/blob/develop/README.rdoc" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
 </div>
 
-<div class="column" style="width: 500px;">
-  <img src='/images/HeidiBlue-480.png' />
-  <br /><br />
+<div class="row">
+  <div class="span4">
+    <h2>Projects</h2>
+    <ul class="projects">
+      <% projects.each do |project| %>
+        <li class="<%= project.build_status %>">
+          <a href="/projects/<%= project.basename %>"><%= project.name %></a>
+          - <%= project.build_status %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 
-  <p>Heidi is OpenSource. Fork, patch and improve it at <a
-    href="https://github.com/OrganisedMinds/heidi">GitHub</a></p>
+  <div class="span4">
+    <h2>About Heidi!</h2>
+    <p>Heidi is OpenSource. Fork, patch and improve it at <a
+      href="https://github.com/OrganisedMinds/heidi">GitHub</a></p>
 
-  <p>Heidi is proudly sponsored by <a
-    href="http://organisedminds.com">organisedminds.com</a> (a super useful
-  flexible tool for collaborating in teams and projects across geographic
-  locations) Check it out!</p>
+    <p>Heidi is proudly sponsored by <a
+      href="http://organisedminds.com">organisedminds.com</a> (a super useful
+    flexible tool for collaborating in teams and projects across geographic
+    locations) Check it out!</p>
 
-  <br /><br />
-  <center>
-    <a href="http://organisedminds.com" title="Sponsored by OrganisedMinds.com">
-      <img src="/images/OrganisedMinds.png" alt="OrganisedMinds.com" />
-    </a>
-  </center>
+    <br /><br />
+    <center>
+      <a href="http://organisedminds.com" title="Sponsored by OrganisedMinds.com">
+        <img src="/images/OrganisedMinds.png" alt="OrganisedMinds.com" />
+      </a>
+    </center>
+  </div>
+
+  <div class="span4">
+    <div class="thumbnail">
+      <img src='/images/HeidiBlue-480.png' alt="Heidi!, artist & copyrights unknown"/>
+    </div>
+  </div>
 
 </div>

@@ -61,7 +61,7 @@ describe Heidi::Web do
       get "/projects/heidi_test/build/#{@project.builds.last.commit}"
       last_response.status.should == 200
 
-      title = Regexp.new("<h2 class=[^>]+>#{@project.builds.last.commit}</h2>")
+      title = Regexp.new("<h2 class=[^>]+>build #{@project.builds.last.commit}</h2>", true)
       last_response.body.should =~ title
     end
 
@@ -74,6 +74,9 @@ describe Heidi::Web do
       author.gsub!(">", "&gt;")
       check = Regexp.new("Author: #{author}")
       last_response.body.should =~ check
+    end
+
+    it "should be able to lock the project" do
     end
   end
 end

@@ -23,7 +23,7 @@ class Heidi
     set :sessions, true
 
     set :views,  "#{dir}/web/views"
-    set :public_folder, "#{dir}/web/public"
+    set :public_folder, "#{dir}/web/assets"
     set :root, dir
 
     get '/' do
@@ -137,6 +137,30 @@ class Heidi
             "<span class=\"#{classes.join(" ")}\">"
           end
       end
+
+      def status2alert(status)
+        case status
+        when "passed"
+          "alert-success"
+        when "failed"
+          "alert-error"
+        else
+          ""
+        end
+      end
+
+      def status2label(status)
+        case status
+        when "passed"
+          "label-success"
+        when "failed"
+          "label-important"
+        else
+          "label-info"
+        end
+      end
+
+
     end
   end
 end

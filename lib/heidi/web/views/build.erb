@@ -1,29 +1,51 @@
-<h1><%= project.name %></h1>
+<section id="header">
+  <div class="row">
+    <div class="span10">
+      <h1><%= project.name %></h1>
+    </div>
+    <div class="span2">
+      <ul class="nav nav-pills">
+        <li class="active">
+          <a href="/projects/<%= project.basename %>">&laquo; back</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-<a href="/projects/<%= project.basename %>"><< back</a>
-<br /><br />
+<section id="details">
+  <div class="row">
+    <div class="span9">
+      <h2 class="<%= build.status %>">Build <%= build.commit %></h2>
+      <br />
+      <br />
+      <ul class="nav nav-pills">
+        <% if build.status == "passed" %>
+        <li class="active">
+          <a href='/projects/<%= project.basename %>/build/<%= build.commit %>/tar_ball'>download</a>
+        </li>
+        <% end %>
+        <% build.logs.each do |log| %>
+          <li><a href="#<%= log.file_name %>"><%= log.file_name %></a></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="span3">
+      <a href="/projects/<%= project.basename %>/commit/<%= build.commit %>">Want to see the commit?</a>
+    </div>
+  </div>
+</section>
 
-<h2 class="<%= build.status %>"><%= build.commit %></h2>
-<div class="column">
-<% if build.status == "passed" %>
- <a href='/projects/<%= project.basename %>/build/<%= build.commit %>/tar_ball'>download</a>
-<br /><br />
-<% end %>
-
-| <% build.logs.each do |log| %>
- <a href="#<%= log.file_name %>"><%= log.file_name %></a> |
-<% end %>
-</div>
-<div class="column">
-  <a href="/projects/<%= project.basename %>/commit/<%= build.commit %>">Want to see the commit?</a>
-</div>
-<br class="clear" />
-<br />
-<br />
-
-<% build.logs.each do |log| %>
-  <h3 class="log"><%= log.file_name %></h3>
-  <a name="<%= log.file_name %>" href="#top" class="top">top</a>
+<section id="logs">
+  <% build.logs.each do |log| %>
+  <div class="row">
+    <div class="span11">
+      <h3 class="log"><%= log.file_name %></h3>
+    </div>
+    <div class="span1">
+      <a name="<%= log.file_name %>" href="#top" class="top">^^ top</a>
+    </div>
+  </div>
   <pre class="terminal"><%= ansi_color_codes(h(log.contents)) %></pre>
-<% end %>
-<br /><br />
+  <% end %>
+</section>
