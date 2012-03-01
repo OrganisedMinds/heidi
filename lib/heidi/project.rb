@@ -34,16 +34,17 @@ class Heidi
         end.first
       end
 
-      return @builds
+      return @builds.sort_by(&:time)
     end
 
     def name=(name)
-      @name = name
       @git["name"] = name
     end
 
     def name
-      @name ||= @git[:name]
+      name ||= @git[:name] || basename
+      name = basename if name.empty?
+      name
     end
 
     def basename
@@ -51,8 +52,9 @@ class Heidi
     end
 
     def commit
-      @git.commit[0..8]
+      @git.commit[0..7]
     end
+    alias_method :HEAD, :commit
 
     def author(commit=self.commit)
       @git.log(1, "%cN <%cE>", commit)
@@ -90,11 +92,11 @@ class Heidi
       @git["build.status"] = status
     end
 
-    def integration_branch
+    def branch
       name = @git["build.branch"]
       name == "" ? nil : name
     end
-    def integration_branch=(name)
+    def branch=(name)
       name.gsub!("origin/", "")
       @git["build.branch"] = name
     end
@@ -107,7 +109,7 @@ class Heidi
       return true if !forced && self.current_build == self.commit
       return "locked" if locked?
 
-      status = "unknown"
+      status = Heidi::DNF
 
       self.lock do
         record_current_build
@@ -117,7 +119,7 @@ class Heidi
         elsif res.is_a? String
           status = res
         else
-          status = "failed"
+          status = Heidi::FAILED
         end
       end
 
@@ -125,13 +127,13 @@ class Heidi
     end
 
     def fetch
-      if integration_branch && @git.branch != integration_branch
-        if @git.branches.include? integration_branch
-          @git.switch(integration_branch)
-          @git.merge "origin/#{integration_branch}"
+      if branch && @git.branch != branch
+        if @git.branches.include? branch
+          @git.switch(branch)
+          @git.merge "origin/#{branch}"
 
         else
-          @git.checkout(integration_branch, "origin/#{integration_branch}")
+          @git.checkout(branch, "origin/#{branch}")
 
         end
       end

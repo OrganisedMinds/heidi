@@ -15,6 +15,11 @@ class Heidi
     end
 
     def setup_build_dir
+      if build.locked? and !build.locked_build?
+        build.log(:error, "The build was locked externaly")
+        return false
+      end
+
       if File.exists? build.build_root
         build.log(:info, "Removing previous build")
         build.shell.do "rm", "-r", build.build_root
@@ -28,10 +33,10 @@ class Heidi
         return false
       end
 
-      if project.integration_branch
+      if project.branch
         @git = Heidi::Git.new(build.build_root)
 
-        branch = project.integration_branch
+        branch = project.branch
         build.log(:info, "Switching to integration branch: #{branch}")
         res = @git.switch(branch)
         if res.nil?

@@ -42,14 +42,16 @@ class Heidi
 
       return failure if !run_hooks(:before)
 
+      # have a builder build the build dir
       builder = Heidi::Builder.new(build)
       return failure if !builder.build!
       return failure if !run_hooks(:build)
 
-      tester = Heidi::Tester.new(build)
+      # have a tester test the build
+      tester = Heidi::Tester.new(self)
       return failure if !tester.test!
-      return failure if !run_hooks(:tests)
 
+      # and run the success hooks
       return failure if !run_hooks(:success)
 
       # create a tarball
@@ -58,13 +60,15 @@ class Heidi
       return success
 
     rescue Exception => e
-      $stderr.puts e.message
-      $stderr.puts e.backtrace.join("\n")
+      build.log(:error, e.message)
+      build.log(:error, e.backtrace.join("\n"))
 
-      return $!
+      return e.message
 
     ensure
       run_hooks(:failure) if @failed == true
+
+      run_hooks(:after)
 
       # always unlock the build root, no matter what
       build.unlock
@@ -72,6 +76,8 @@ class Heidi
     end
 
     def run_hooks(where)
+      build.load_hooks if build.hooks.nil? || build.hooks.empty?
+
       return true if @hooks_ran.include?(where)
       return true if build.hooks[where].nil? || build.hooks[where].empty?
 

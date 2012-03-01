@@ -14,7 +14,7 @@
     <option value="">...</option>
     <% project.integration_branches.each do |branch| %>
       <% branch_name = branch.gsub("origin/", "") %>
-      <option value="<%= branch_name %>" <%= "selected" if branch_name == project.integration_branch %>><%= branch %></option>
+      <option value="<%= branch_name %>" <%= "selected" if branch_name == project.branch %>><%= branch %></option>
     <% end %>
   </select>
 
