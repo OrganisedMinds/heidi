@@ -39,12 +39,17 @@ class Heidi
     end
 
     post '/projects/' do
-      worker = Class.new
-      worker.extend(Heidi::Shell)
-      worker.silent
-
       basename = params[:name].downcase.gsub(/\W/,'_')
-      worker.new_project(basename, params[:origin], params[:branch])
+
+      Thread.new(basename) do |name|
+        worker = Class.new
+        worker.extend(Heidi::Shell)
+        worker.silent
+
+        worker.new_project(name, params[:origin], params[:branch])
+      end
+
+      sleep 1
 
       redirect "/projects/#{basename}", 302
     end

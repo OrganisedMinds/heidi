@@ -64,6 +64,10 @@ class Heidi
       @git.log(1, "%ci", commit)
     end
 
+    def message(commit=self.commit)
+      @git.log(1, "%B", commit)
+    end
+
     def last_commit
       @git["commit"]
     end
@@ -86,7 +90,7 @@ class Heidi
     end
 
     def build_status
-      @git["build.status"]
+      @git["build.status"] || "unknown"
     end
     def build_status=(status)
       @git["build.status"] = status
@@ -157,8 +161,8 @@ class Heidi
       end
     end
 
-    def log
-      log = @git.graph(120)
+    def log(length=60)
+      log = @git.graph(length)
 
       lines = []
       log.out.lines.each do |line|

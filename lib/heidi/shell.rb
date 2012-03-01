@@ -45,7 +45,7 @@ class Heidi
       shout "after running bundle install --binstubs"
     end
 
-    def new_project(name, repo)
+    def new_project(name, repo, branch="master")
       if File.exists? "projects/#{name}"
         $stderr.puts "projects/#{name} is in the way. Please remove it"
         exit 1
@@ -71,6 +71,8 @@ class Heidi
         sh.in("cached") do |cached|
           shout "setting the name of the project to: #{name}"
           cached.git %W(config heidi.name #{name})
+          shout "setting the branch to: #{branch}"
+          cached.git %W(config heidi.build.branch #{branch})
         end
       end
 

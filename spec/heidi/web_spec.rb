@@ -23,21 +23,21 @@ describe Heidi::Web do
     Heidi::Web
   end
 
-  it "should move away from /" do
-    get '/'
-    last_response.status.should == 302
-  end
-
   it "should show a homepage" do
-    get '/projects/'
+    get '/'
     last_response.status.should == 200
     last_response.body.should =~ /Heidi/
   end
 
   it "should display the projects on the homepage" do
-    get '/projects/'
+    get '/'
     last_response.status.should == 200
     last_response.body.should =~ /heidi_test/
+  end
+
+  it "should display a project creation form" do
+    get '/projects/'
+    last_response.status.should == 200
   end
 
   it "should display the project page" do
@@ -49,7 +49,7 @@ describe Heidi::Web do
   it "should display the configuration page" do
     get '/projects/heidi_test/configure'
     last_response.status.should == 200
-    last_response.body.should =~ /Configure Heidi Test Project on the web/
+    last_response.body.should =~ /Configuration/
   end
 
   describe "Project internals" do

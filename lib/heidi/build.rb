@@ -41,8 +41,14 @@ class Heidi
       project.date(@commit)
     end
 
+    def message
+      project.message(@commit)
+    end
+
     def time
       Time.parse(date)
+    rescue
+      Time.now
     end
 
     def load_hooks
