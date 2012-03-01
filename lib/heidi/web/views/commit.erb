@@ -1,17 +1,4 @@
-<section id="header">
-  <div class="row">
-    <div class="span10">
-      <h1><%= project.name %></h1>
-    </div>
-    <div class="span2">
-      <ul class="nav nav-pills">
-        <li class="active">
-          <a href="/projects/<%= project.basename %>">&laquo; back</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
+<%= erb :project_header, :locals => { :project => project } %>
 
 <section id="commit">
   <div class="row">

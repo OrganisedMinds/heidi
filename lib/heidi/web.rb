@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'heidi'
+require 'heidi/shell'
 require 'simple_shell'
 
 class Heidi
@@ -16,6 +17,7 @@ class Heidi
 
     before {
       @heidi = Heidi.new(self.class.project_path)
+      @crumbs = []
     }
 
     dir = File.dirname(File.expand_path(__FILE__))
@@ -27,11 +29,24 @@ class Heidi
     set :root, dir
 
     get '/' do
-      redirect '/projects/', 302
+      @crumbs = [ { 'home' => ''} ]
+      erb(:home, { :locals => { :projects => @heidi.projects }})
     end
 
     get '/projects/' do
-      erb(:home, { :locals => { :projects => @heidi.projects }})
+      @crumbs = [ { 'home' => '/'}, { 'new project' => '' } ]
+      erb(:new_project)
+    end
+
+    post '/projects/' do
+      worker = Class.new
+      worker.extend(Heidi::Shell)
+      worker.silent
+
+      basename = params[:name].downcase.gsub(/\W/,'_')
+      worker.new_project(basename, params[:origin], params[:branch])
+
+      redirect "/projects/#{basename}", 302
     end
 
     get '/projects/:name' do
@@ -136,6 +151,10 @@ class Heidi
             classes = colors.split(";").collect { |c| "color#{c}" }
             "<span class=\"#{classes.join(" ")}\">"
           end
+      end
+
+      def breadcrumbs
+        ""
       end
 
       def status2alert(status)
