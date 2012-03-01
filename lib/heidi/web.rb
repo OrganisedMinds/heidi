@@ -63,6 +63,19 @@ class Heidi
       erb(:project, { :locals => { :project => project }})
     end
 
+    get '/projects/:name/fetch' do
+      project = @heidi[params[:name]]
+      if project.nil?
+        return "no project by that name: #{params[:name]}"
+      end
+
+      Thread.new { project.fetch && project.integrate() }
+
+      sleep 1
+
+      redirect "/projects/#{project.basename}", 302
+    end
+
     get '/projects/:name/build/:commit' do
       project = @heidi[params[:name]]
       if project.nil?

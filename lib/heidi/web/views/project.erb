@@ -16,8 +16,12 @@
 
   <br />
   <div class="row">
-    <div class="span10">
+    <div class="span6">
       <h2>Overview</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span6 well">
       <% if project.locked? %>
         <span class="label label-warning">Locked</span>
         <br /><br />
@@ -51,12 +55,14 @@
 
       <div class="row">
         <div class="span2"><strong>Integration branch</strong></div>
-        <div class="span2">
+        <div class="span4">
           <span class="label label-info"><%= project.branch %></span>
+          <a class="pull-right btn btn-success" href="/projects/<%= project.basename %>/fetch">Fetch & Integrate</a>
         </div>
       </div>
 
     </div>
+
   </div>
 </section>
 

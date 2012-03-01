@@ -110,7 +110,10 @@ class Heidi
     end
 
     def integrate(forced=false)
-      return true if !forced && self.current_build == self.commit
+      must_build = !(self.current_build == self.commit)
+      must_build = build_status != "passed"
+
+      return true if !forced && !must_build
       return "locked" if locked?
 
       status = Heidi::DNF
@@ -131,22 +134,26 @@ class Heidi
     end
 
     def fetch
-      if branch && @git.branch != branch
-        if @git.branches.include? branch
-          @git.switch(branch)
-          @git.merge "origin/#{branch}"
+      return if locked?
 
-        else
-          @git.checkout(branch, "origin/#{branch}")
+      self.lock do
+        if branch && @git.branch != branch
+          if @git.branches.include? branch
+            @git.switch(branch)
+            @git.merge "origin/#{branch}"
 
+          else
+            @git.checkout(branch, "origin/#{branch}")
+
+          end
         end
-      end
 
-      @git.pull
+        @git.pull
 
-      # when the head has changed, update some stuff
-      if last_commit != self.commit
-        record_last_commit
+        # when the head has changed, update some stuff
+        if last_commit != self.commit
+          record_last_commit
+        end
       end
     end
 
