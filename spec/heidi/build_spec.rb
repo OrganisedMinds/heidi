@@ -35,11 +35,29 @@ describe Heidi::Build do
     @build.build_root.should == File.join(@build.root, "build")
   end
 
-  it "should have an author"
-  it "should have a date"
-  it "should have a time"
-  it "should load hooks"
-  it "should clean up"
+  it "should have an author" do
+    @build.author.should_not be_nil
+    @build.date.should be_kind_of(String)
+  end
+
+  it "should have a date" do
+    @build.date.should_not be_nil
+    @build.date.should be_kind_of(String)
+  end
+
+  it "should have a time" do
+    @build.time.should_not be_nil
+    @build.time.should_not == 0
+    @build.time.should be_kind_of(Time)
+  end
+
+  it "should load hooks" do
+    expect { @build.load_hooks }.to change { @build.hooks }
+  end
+
+  it "should clean up" do
+    expect { @build.clean }.to change { Dir[File.join(@build.root, "**", "*")] }
+  end
 
   describe "Locking" do
     it "should not be locked" do
@@ -134,6 +152,15 @@ describe Heidi::Build do
       @build.status.should == Heidi::FAILED
     end
 
-    it "should provide a tar-ball"
+    it "should provide access to the tar-ball" do
+      # first 'create' the tar-ball
+      File.open(File.join(@build.root, "#{@build.commit}.tar.bz2"), "w") do |f|
+        f.puts "I am the tar-ball, see?"
+      end
+
+      @build.tar_ball.should_not be_nil
+      @build.tar_ball.should be_kind_of(IO)
+      @build.tar_ball.read.should =~ /i am the tar-ball/i
+    end
   end
 end
