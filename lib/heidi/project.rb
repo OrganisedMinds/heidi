@@ -64,6 +64,10 @@ class Heidi
       @git.log(1, "%ci", commit)
     end
 
+    def message(commit=self.commit)
+      @git.log(1, "%B", commit)
+    end
+
     def last_commit
       @git["commit"]
     end
@@ -86,7 +90,7 @@ class Heidi
     end
 
     def build_status
-      @git["build.status"]
+      @git["build.status"] || "unknown"
     end
     def build_status=(status)
       @git["build.status"] = status
@@ -106,7 +110,10 @@ class Heidi
     end
 
     def integrate(forced=false)
-      return true if !forced && self.current_build == self.commit
+      must_build = !(self.current_build == self.commit)
+      must_build = build_status != "passed"
+
+      return true if !forced && !must_build
       return "locked" if locked?
 
       status = Heidi::DNF
@@ -127,22 +134,26 @@ class Heidi
     end
 
     def fetch
-      if branch && @git.branch != branch
-        if @git.branches.include? branch
-          @git.switch(branch)
-          @git.merge "origin/#{branch}"
+      return if locked?
 
-        else
-          @git.checkout(branch, "origin/#{branch}")
+      self.lock do
+        if branch && @git.branch != branch
+          if @git.branches.include? branch
+            @git.switch(branch)
+            @git.merge "origin/#{branch}"
 
+          else
+            @git.checkout(branch, "origin/#{branch}")
+
+          end
         end
-      end
 
-      @git.pull
+        @git.pull
 
-      # when the head has changed, update some stuff
-      if last_commit != self.commit
-        record_last_commit
+        # when the head has changed, update some stuff
+        if last_commit != self.commit
+          record_last_commit
+        end
       end
     end
 
@@ -157,8 +168,8 @@ class Heidi
       end
     end
 
-    def log
-      log = @git.graph(120)
+    def log(length=60)
+      log = @git.graph(length)
 
       lines = []
       log.out.lines.each do |line|

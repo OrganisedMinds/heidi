@@ -1,0 +1,56 @@
+<header>
+  <div class="row">
+    <div class="span9">
+      <h1>New Project</h1>
+    </div>
+    <div class="span3">
+      <ul class="nav nav-list">
+        <li>
+          <a href="/"><i class="icon-home"></i>Home</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<br />
+<section id="form">
+  <div class="row">
+    <div class="span12 well">
+      <div class="alert alert-error">
+        <strong>Attention! Attention!</strong><br />
+        The new-project-over-web feature is 'highly expirimental' at best.<br />
+        Best results are obtained with small repos
+      </div>
+      <br />
+
+      <form method="post" action="/projects/">
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" value="" />
+        </div>
+        <div class="field">
+          <label for="origin">Origin</label>
+          <input type="text" name="origin" id="origin" value="" />
+        </div>
+        <div class="field">
+          <label for="branch">Branch</label>
+          <input type="text" name="branch" id="branch" value="master" />
+        </div>
+
+        <br />
+        <div class="btn-toolbar">
+          <div class="btn-group">
+            <a class="btn" href="/">&laquo; Cancel</a>
+            <button class="btn" name="reset" type="reset" value="0">Reset</button>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-success" name="submit" type="submit" value="1">Save &raquo;</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</section>

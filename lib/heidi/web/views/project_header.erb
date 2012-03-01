@@ -1,0 +1,20 @@
+<header>
+  <div class="row">
+    <div class="span9">
+      <h1><%= project.name %></h1>
+    </div>
+    <div class="span3">
+      <ul class="nav nav-list">
+        <li>
+          <a href="/"><i class="icon-home"></i>Home</a>
+        </li>
+        <li>
+          <a href="/projects/<%= project.basename %>"><i class="icon-book"></i><%= project.name %></a>
+        </li>
+        <li>
+          <a href="/projects/<%= project.basename %>/configure"><i class="icon-cog"></i>Configure</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

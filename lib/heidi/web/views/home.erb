@@ -1,20 +1,27 @@
+<style>
+  ul.projects li { margin-bottom: 5px; }
+  ul.projects li a { display: inline-block; min-width: 120px; }
+</style>
 <div class="hero-unit">
   <h1>Welcome to Heidi!</h1>
   <p>A simple, naive, yet powerful Continious Integration ... thingy...</p>
   <p><a href="https://github.com/OrganisedMinds/heidi/blob/develop/README.rdoc" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
 </div>
 
+<section>
 <div class="row">
   <div class="span4">
     <h2>Projects</h2>
     <ul class="projects">
-      <% projects.each do |project| %>
+      <% projects.sort_by(&:basename).each do |project| %>
         <li class="<%= project.build_status %>">
           <a href="/projects/<%= project.basename %>"><%= project.name %></a>
-          - <%= project.build_status %>
+          <span class="label <%= status2label(project.build_status) %>"><%= project.build_status.empty? ? "unknown" : project.build_status %></span>
         </li>
       <% end %>
     </ul>
+    <br />
+    <a href="/projects/" class="btn btn-success"><strong>+</strong> &nbsp;new project</a>
   </div>
 
   <div class="span4">
@@ -40,5 +47,5 @@
       <img src='/images/HeidiBlue-480.png' alt="Heidi!, artist & copyrights unknown"/>
     </div>
   </div>
-
 </div>
+</section>
