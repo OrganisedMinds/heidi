@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "heidi"
-  s.version = "0.3.1"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Hartog C. de Mik"]
-  s.date = "2012-02-15"
+  s.date = "2012-03-01"
   s.description = "CI-Joe alike CI system called Heidi."
   s.email = "hartog@organisedminds.com"
   s.executables = ["heidi", "heidi_web"]
@@ -36,34 +36,70 @@ Gem::Specification.new do |s|
     "lib/heidi/hook.rb",
     "lib/heidi/integrator.rb",
     "lib/heidi/project.rb",
+    "lib/heidi/shell.rb",
     "lib/heidi/tester.rb",
     "lib/heidi/web.rb",
-    "lib/heidi/web/public/css/screen.css",
-    "lib/heidi/web/public/images/HeidiBlue-480.png",
-    "lib/heidi/web/public/images/HeidiBlue.gif",
-    "lib/heidi/web/public/images/OrganisedMinds.png",
-    "lib/heidi/web/public/images/heidi.jpeg",
+    "lib/heidi/web/assets/css/bootstrap-responsive.css",
+    "lib/heidi/web/assets/css/bootstrap.css",
+    "lib/heidi/web/assets/css/colors.css",
+    "lib/heidi/web/assets/css/docs.css",
+    "lib/heidi/web/assets/images/HeidiBlue-480.png",
+    "lib/heidi/web/assets/images/HeidiBlue.gif",
+    "lib/heidi/web/assets/images/OrganisedMinds.png",
+    "lib/heidi/web/assets/images/heidi.jpeg",
+    "lib/heidi/web/assets/img/glyphicons-halflings-white.png",
+    "lib/heidi/web/assets/img/glyphicons-halflings.png",
+    "lib/heidi/web/assets/img/glyphicons/glyphicons_009_magic.png",
+    "lib/heidi/web/assets/img/glyphicons/glyphicons_042_group.png",
+    "lib/heidi/web/assets/img/glyphicons/glyphicons_079_podium.png",
+    "lib/heidi/web/assets/img/glyphicons/glyphicons_082_roundabout.png",
+    "lib/heidi/web/assets/img/glyphicons/glyphicons_155_show_thumbnails.png",
+    "lib/heidi/web/assets/img/glyphicons/glyphicons_163_iphone.png",
+    "lib/heidi/web/assets/img/glyphicons/glyphicons_214_resize_small.png",
+    "lib/heidi/web/assets/img/glyphicons/glyphicons_266_book_open.png",
+    "lib/heidi/web/assets/js/README.md",
+    "lib/heidi/web/assets/js/application.js",
+    "lib/heidi/web/assets/js/bootstrap-alert.js",
+    "lib/heidi/web/assets/js/bootstrap-button.js",
+    "lib/heidi/web/assets/js/bootstrap-carousel.js",
+    "lib/heidi/web/assets/js/bootstrap-collapse.js",
+    "lib/heidi/web/assets/js/bootstrap-dropdown.js",
+    "lib/heidi/web/assets/js/bootstrap-modal.js",
+    "lib/heidi/web/assets/js/bootstrap-popover.js",
+    "lib/heidi/web/assets/js/bootstrap-scrollspy.js",
+    "lib/heidi/web/assets/js/bootstrap-tab.js",
+    "lib/heidi/web/assets/js/bootstrap-tooltip.js",
+    "lib/heidi/web/assets/js/bootstrap-transition.js",
+    "lib/heidi/web/assets/js/bootstrap-typeahead.js",
+    "lib/heidi/web/assets/js/google-code-prettify/prettify.css",
+    "lib/heidi/web/assets/js/google-code-prettify/prettify.js",
+    "lib/heidi/web/assets/js/jquery.js",
     "lib/heidi/web/views/build.erb",
     "lib/heidi/web/views/commit.erb",
     "lib/heidi/web/views/config.erb",
     "lib/heidi/web/views/home.erb",
     "lib/heidi/web/views/layout.erb",
+    "lib/heidi/web/views/new_project.erb",
     "lib/heidi/web/views/project.erb",
+    "lib/heidi/web/views/project_header.erb",
     "spec/heidi/build_spec.rb",
     "spec/heidi/builder_spec.rb",
     "spec/heidi/git_spec.rb",
     "spec/heidi/hook_spec.rb",
     "spec/heidi/integrator_spec.rb",
     "spec/heidi/project_spec.rb",
-    "spec/heidi/tester_spec.rb",
+    "spec/heidi/shell_spec.rb",
     "spec/heidi/web_spec.rb",
     "spec/heidi_spec.rb",
-    "spec/spec_helper.rb"
+    "spec/spec_helper.rb",
+    "spec/support/01_rworld.rb",
+    "spec/support/mock_project.rb",
+    "spec/support/survivable.rb"
   ]
   s.homepage = "http://github.com/coffeeaddict/heid"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.10"
+  s.rubygems_version = "1.8.16"
   s.summary = "A naive CI system"
 
   if s.respond_to? :specification_version then
@@ -74,6 +110,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<sinatra>, [">= 0"])
       s.add_runtime_dependency(%q<simple_shell>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_development_dependency(%q<rack-test>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.3"])
@@ -83,6 +120,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<sinatra>, [">= 0"])
       s.add_dependency(%q<simple_shell>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_dependency(%q<rack-test>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
@@ -93,6 +131,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<sinatra>, [">= 0"])
     s.add_dependency(%q<simple_shell>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+    s.add_dependency(%q<rack-test>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
