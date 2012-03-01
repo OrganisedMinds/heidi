@@ -8,6 +8,9 @@ class Heidi
   # A build is tied to a commit
   #
   class Build
+    FAILURE = "FAILURE"
+    SUCCESS = "SUCCESS"
+
     attr_reader :project, :commit, :root, :log_root, :build_root, :shell,
       :hooks, :logs
 
@@ -26,6 +29,8 @@ class Heidi
 
       @shell.mkdir %W(-p #{@log_root}) unless File.exists?(@log_root)
       @logs = Logs.new(@log_root)
+
+      @i_locked_build = false
     end
 
     def author
@@ -34,6 +39,16 @@ class Heidi
 
     def date
       project.date(@commit)
+    end
+
+    def message
+      project.message(@commit)
+    end
+
+    def time
+      Time.parse(date)
+    rescue
+      Time.now
     end
 
     def load_hooks
@@ -77,7 +92,7 @@ class Heidi
         shell.mv %W(#{@log_root} #{@log_root}.0)
       end
 
-      %w(build/ SUCCESS FAILURE).each do |inode|
+      %W(build/ #{SUCCESS} #{FAILURE}).each do |inode|
         shell.rm("-r", "-f", inode) if File.exists? File.join(@root, inode)
       end
 
@@ -103,8 +118,10 @@ class Heidi
     def lock(&block)
       log(:info, "Locking build")
       File.open(lock_file, File::CREAT|File::TRUNC|File::WRONLY) do |f|
+        @i_locked_build = true
         f.puts Time.now.ctime
       end
+
 
       if block_given?
         yield
@@ -116,10 +133,15 @@ class Heidi
       return unless locked?
       log(:info, "Unlocking build")
       File.unlink lock_file
+      @i_locked_build = false
     end
 
     def locked?
       File.exists? lock_file
+    end
+
+    def locked_build?
+      @i_locked_build == true ? true : false
     end
 
     def record(what)
@@ -127,12 +149,12 @@ class Heidi
       file = nil
       case what
       when :failure
-        project.build_status = "failed"
-        file = File.open(File.join(@root, "FAILURE"), flags)
+        project.build_status = Heidi::FAILED
+        file = File.open(File.join(@root, FAILURE), flags)
       when :success
-        project.build_status = "passed"
+        project.build_status = Heidi::PASSED
         project.record_latest_build
-        file = File.open(File.join(@root, "SUCCESS"), flags)
+        file = File.open(File.join(@root, SUCCESS), flags)
       end
 
       unless file.nil?
@@ -142,19 +164,19 @@ class Heidi
     end
 
     def failed?
-      File.exists?(File.join(@root, "FAILURE"))
+      File.exists?(File.join(@root, FAILURE))
     end
 
     def success?
-      File.exists?(File.join(@root, "SUCCESS"))
+      File.exists?(File.join(@root, SUCCESS))
     end
 
     def status
       self.failed? ?
-        "failed" :
+        Heidi::FAILED :
         self.success? ?
-          "passed" :
-          "DNF"
+          Heidi::PASSED :
+          Heidi::DNF
     end
 
     # file handle to tar ball
@@ -169,6 +191,8 @@ class Heidi
       def initialize(log_root)
         @log_root = log_root
         @logs = []
+
+        FileUtils.mkdir_p log_root if !File.directory?(log_root)
 
         Dir[File.join(@log_root, "*")].each do |file|
           @logs << Log.new(file)
@@ -205,6 +229,14 @@ class Heidi
               f.puts msg
             end
           end
+
+          read
+        end
+
+        def read
+          @contents = File.read(@file)
+        rescue
+          @contents = ""
         end
 
         def raw(msg)

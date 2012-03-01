@@ -1,21 +1,37 @@
-<h1>Configure <%= project.name %></h1>
+<%= erb :project_header, :locals => { :project => project } %>
 
-<form method="POST" action="/projects/<%= project.basename %>">
-  <label for="name">Name</label>
-  <input type="text" name="name" value="<%= project.name %>" />
-  <br />
-  <br />
+<section id="config">
+  <h2>Configuration</h2>
 
-  <label for="branch">Integration branch</label>
-  <select name="branch">
-    <option value="">...</option>
-    <% project.integration_branches.each do |branch| %>
-      <% branch_name = branch.split("/").last %>
-      <option value="<%= branch_name %>" <%= "selected" if branch_name == project.integration_branch %>><%= branch %></option>
-    <% end %>
-  </select>
+  <div class="well">
+    <form method="POST" action="/projects/<%= project.basename %>">
+    <div class="field">
+      <label for="name">Name</label>
+      <input type="text" name="name" value="<%= project.name %>" />
+    </div>
 
-  <br />
-  <br />
-  <input type="submit" />
-</form>
+    <div class="field">
+      <label for="branch">Integration branch</label>
+      <select name="branch">
+        <option value="">...</option>
+        <% project.integration_branches.each do |branch| %>
+          <% branch_name = branch.gsub("origin/", "") %>
+          <option value="<%= branch_name %>" <%= "selected" if branch_name == project.branch %>><%= branch %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <br />
+    <div class="btn-toolbar">
+      <div class="btn-group">
+        <a class="btn" href="/projects/<%= project.basename %>">&laquo; Cancel</a>
+        <button class="btn" name="reset" type="reset" value="0">Reset</button>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-success" name="submit" type="submit" value="1">Save &raquo;</button>
+      </div>
+    </div>
+  </form>
+</div>
+</section>

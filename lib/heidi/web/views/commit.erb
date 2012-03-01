@@ -1,10 +1,13 @@
-<h1><%= project.name %></h1>
+<%= erb :project_header, :locals => { :project => project } %>
 
-<a href="/projects/<%= project.basename %>"><< back</a>
-<br /><br />
+<section id="commit">
+  <div class="row">
+    <div class="span12">
+      <h2><%= commit %></h2>
 
-<h2><%= commit %></h2>
-
-<pre class="terminal"><%= ansi_color_codes(h(stat)) %>
+      <pre class="terminal"><%= ansi_color_codes(h(stat)) %>
 
 <%= ansi_color_codes(h(diff)) %></pre>
+    </div>
+  </div>
+</section>

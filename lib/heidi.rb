@@ -4,6 +4,10 @@ require 'simple_shell'
 require 'heidi/project'
 
 class Heidi
+  PASSED = "passed"
+  FAILED = "failed"
+  DNF     = "DNF"
+
   attr_reader :projects
 
   def initialize(root=Dir.pwd)

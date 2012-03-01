@@ -1,28 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  height: 100%;
-}
-
-body {
-  background-color: white;
-  font: 13.34px helvetica, arial, clean, sans-serif;
-  *font-size: small;
-  text-align: center;
-}
-
-h1, h2, h3 {
-  margin-bottom: 1em;
-}
-
-h1 a {
-  text-decoration: none;
-  color: #000;
-}
-
 .color1 {
   font-weight: bold;
 }
@@ -105,36 +80,14 @@ h1 a {
   padding-left: 3em;
 }
 
-p {
-  margin: 1em 0;
-}
-
-a {
-  color: #333;
-}
-
-a:hover {
-  color: black;
-}
-
-a:visited {
-  color: #333;
-}
-
 table {
   font-size: inherit;
   font: 100%;
 }
 
-
-.container {
-  width: 80%;
-  text-align: justify;
-  margin: 2em auto;
-}
-
 pre.terminal {
   font-family: 'Bitstream Vera Sans Mono', 'Courier', monospace;
+  font-size: 110%;
   border: 1px solid black;
   background-color: #333;
   color: white;
@@ -172,31 +125,4 @@ ul {
 
 .clear {
   clear: both;
-}
-
-.column {
-  width: 48%;
-  margin-right: 10px;
-  float: left;
-}
-
-.label {
-  display: inline-block;
-  min-width: 120px;
-}
-
-ul.projects {
-  font-size: 110%;
-  font-weight: bold;
-}
-
-.history {
-  width: 75%;
-  overflow: hidden;
-}
-
-label {
-  display: inline-block;
-  min-width: 120px;
-  font-weight: bold;
 }

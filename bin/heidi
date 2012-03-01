@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'simple_shell'
-require 'heidi'
+require 'heidi/shell'
 
 cmd   = ARGV.shift
 for_a = ARGV.shift
@@ -12,32 +11,14 @@ if ENV['HEIDI_PATH']
   ENV['HEIDI_PATH'] = nil
 end
 
-shell = SimpleShell.new
 
-def check_heidi_root()
-  if !File.exists?("./projects")  && File.directory?("./projects")
-    $stderr.puts "You're not inside Heidi"
-    exit 1
-  end
-end
+
+include Heidi::Shell
+noisy
 
 case cmd
 when "new"
-  puts "creating #{for_a}/"
-  puts "creating #{for_a}/projects"
-  shell.mkdir %W(-p #{for_a}/projects)
-  shell.mkdir %W(-p #{for_a}/bin)
-  puts "creating #{for_a}/Gemfile"
-  File.open("#{for_a}/Gemfile", File::CREAT|File::WRONLY) do |f|
-    f.puts 'source "http://rubygems.org"'
-    f.puts 'gem "heidi"'
-  end
-
-  puts "\nIf you like you can run: bundle install --binstubs"
-  puts "this will tie heidi and heidi_web to this location"
-  puts "\nFor even more tying down, run: bundle install --deployment"
-  puts "after running bundle install --binstubs"
-
+  new_heidi_root(for_a)
 
 when "project"
   repo = ARGV.shift
@@ -48,69 +29,14 @@ when "project"
   end
 
   check_heidi_root
+  new_project(for_a, repo)
 
-  if File.exists? "projects/#{for_a}"
-    $stderr.puts "projects/#{for_a} is in the way. Please remove it"
-    exit 1
-  end
-
-  # create a logs dir
-  puts "creating projects/#{for_a}"
-  puts "creating projects/#{for_a}/logs"
-  shell.mkdir %W(-p projects/#{for_a}/logs)
-
-  %w(build tests failure success before).each do |hook|
-    puts "creating projects/#{for_a}/hooks/#{hook}"
-    shell.mkdir %W(-p projects/#{for_a}/hooks/#{hook})
-  end
-
-  # make a clone
-  shell.in("projects/#{for_a}") do |sh|
-    puts "filling #{for_a} cache"
-
-    puts "git clone #{repo}"
-    sh.git %W(clone #{repo} cached)
-
-    sh.in("cached") do |cached|
-      puts "setting the name of the project to: #{for_a}"
-      cached.git %W(config heidi.name #{for_a})
-    end
-  end
-  puts "Creating default test hook: projects/#{for_a}/hooks/tests/01_rspec"
-  File.open("projects/#{for_a}/hooks/tests/01_rspec", File::CREAT|File::WRONLY) do |f|
-    f.puts %q(#!/bin/sh
-
-# edit this file to your needs
-bundle exec rake spec
-)
-  end
-  shell.chmod %W(+x projects/#{for_a}/hooks/tests/01_rspec)
-  puts "\n"
-  puts "Now edit or add some hooks and run: heidi integrate #{for_a}"
 
 when "drop"
   check_heidi_root
-
-  # remove build and cache dir, expose logs directly
-  puts "removing build dir"
-  shell.rm %W(-r projects/#{for_a}/build)
-  puts "removing cache (preserving project config)"
-  shell.cp %W(-pr projects/#{for_a}/cached/.git/config projects/#{for_a})
-  shell.rm %W(-r projects/#{for_a}/cached)
-  puts "exposing builds"
-  shell.mv %W(projects/#{for_a}/logs/* projects/#{for_a}/)
-  shell.rm %W(-r projects/#{for_a}/logs)
+  remove_project(for_a)
 
 when "integrate"
-  heidi = Heidi.new
-  heidi.projects.each do |project|
-    next if !for_a.nil? && project.name != for_a
-
-    project.fetch
-    msg = project.integrate(!for_a.nil?)
-    unless msg.nil? || msg == true
-      $stderr.puts "#{project.name}: #{msg}"
-    end
-  end
+  integrate(for_a)
 
 end

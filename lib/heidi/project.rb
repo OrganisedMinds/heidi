@@ -34,16 +34,17 @@ class Heidi
         end.first
       end
 
-      return @builds
+      return @builds.sort_by(&:time)
     end
 
     def name=(name)
-      @name = name
       @git["name"] = name
     end
 
     def name
-      @name ||= @git[:name]
+      name ||= @git[:name] || basename
+      name = basename if name.empty?
+      name
     end
 
     def basename
@@ -51,8 +52,9 @@ class Heidi
     end
 
     def commit
-      @git.commit[0..8]
+      @git.commit[0..7]
     end
+    alias_method :HEAD, :commit
 
     def author(commit=self.commit)
       @git.log(1, "%cN <%cE>", commit)
@@ -60,6 +62,10 @@ class Heidi
 
     def date(commit=self.commit)
       @git.log(1, "%ci", commit)
+    end
+
+    def message(commit=self.commit)
+      @git.log(1, "%B", commit)
     end
 
     def last_commit
@@ -84,18 +90,18 @@ class Heidi
     end
 
     def build_status
-      @git["build.status"]
+      @git["build.status"] || "unknown"
     end
     def build_status=(status)
       @git["build.status"] = status
     end
 
-    def integration_branch
+    def branch
       name = @git["build.branch"]
       name == "" ? nil : name
     end
-    def integration_branch=(name)
-      name = name.split('/').last if name =~ /\//
+    def branch=(name)
+      name.gsub!("origin/", "")
       @git["build.branch"] = name
     end
 
@@ -104,10 +110,13 @@ class Heidi
     end
 
     def integrate(forced=false)
-      return true if !forced && self.current_build == self.commit
+      must_build = !(self.current_build == self.commit)
+      must_build = build_status != "passed"
+
+      return true if !forced && !must_build
       return "locked" if locked?
 
-      status = "unknown"
+      status = Heidi::DNF
 
       self.lock do
         record_current_build
@@ -117,7 +126,7 @@ class Heidi
         elsif res.is_a? String
           status = res
         else
-          status = "failed"
+          status = Heidi::FAILED
         end
       end
 
@@ -125,22 +134,26 @@ class Heidi
     end
 
     def fetch
-      if integration_branch && @git.branch != integration_branch
-        if @git.branches.include? integration_branch
-          @git.switch(integration_branch)
-          @git.merge "origin/#{integration_branch}"
+      return if locked?
 
-        else
-          @git.checkout(integration_branch, "origin/#{integration_branch}")
+      self.lock do
+        if branch && @git.branch != branch
+          if @git.branches.include? branch
+            @git.switch(branch)
+            @git.merge "origin/#{branch}"
 
+          else
+            @git.checkout(branch, "origin/#{branch}")
+
+          end
         end
-      end
 
-      @git.pull
+        @git.pull
 
-      # when the head has changed, update some stuff
-      if last_commit != self.commit
-        record_last_commit
+        # when the head has changed, update some stuff
+        if last_commit != self.commit
+          record_last_commit
+        end
       end
     end
 
@@ -155,8 +168,8 @@ class Heidi
       end
     end
 
-    def log
-      log = @git.graph(120)
+    def log(length=60)
+      log = @git.graph(length)
 
       lines = []
       log.out.lines.each do |line|
